@@ -1,0 +1,12 @@
+{
+  "name": "stellar-tarot",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "星间：一个安静、温柔、可分享的中文塔罗空间",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/*.test.js",
+    "dev": "python3 -m http.server 4173 --bind 127.0.0.1"
+  }
+}

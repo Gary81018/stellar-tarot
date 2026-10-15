@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f4ed">
+  <meta name="description" content="星间，一个与自己对话的塔罗空间。78 张塔罗牌，四种牌阵，温柔解读。慢一点，听见心里的答案。">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>星间 · STELLAR TAROT — 在星光之间，遇见自己</title>
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./src/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="site-header">
+    <a href="#home" class="brand" aria-label="星间首页"><span class="brand-symbol" aria-hidden="true">✳</span><span class="brand-name">星间<small>STELLAR TAROT</small></span></a>
+    <nav aria-label="主导航"><a href="#home" data-nav="home">探索星间</a><a href="#library" data-nav="library">塔罗图鉴</a><a href="#journal" data-nav="journal">我的记录<span class="nav-dot"></span></a></nav>
+    <a class="header-cta" href="#ritual">开启占卜 <span aria-hidden="true">↗</span></a>
+  </header>
+  <main id="main" tabindex="-1"></main>
+  <footer class="site-footer"><a class="footer-brand" href="#home">✳ 星间 <span>STELLAR TAROT</span></a><p>塔罗是一面镜子，让你看见更多可能。<br class="mobile-only">仅供娱乐与自我探索，选择始终在你手中。</p><button class="text-button" data-action="privacy">隐私与使用说明 ↗</button></footer>
+  <dialog id="modal" aria-labelledby="modal-title"><div id="modal-body"></div><button class="modal-close" data-action="close-modal" aria-label="关闭弹窗">×</button></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript><p class="noscript">请启用 JavaScript 后使用星间，抽牌和解读都在你的浏览器内完成。</p></noscript>
+</body>
+</html>
