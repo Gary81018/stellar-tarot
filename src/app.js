@@ -1,16 +1,17 @@
-import { renderAIPanel, generateAI, cancelAI, deleteAI, clearAIHistory, aiDownloadText } from './ai-panel.js';
-import { readingFingerprint } from './ai-client.js';
+import { renderAIPanel, deleteAI, clearAIHistory, aiDownloadText } from './ai-panel.js';
+import { buildReadingPrompt } from './ai-prompt.js';
 import { supportAvailable, renderSupport, renderSupportCallout, bindSupportImages } from './support.js';
+import { prepareDrawSession, selectDraw } from './draw-session.js';
 import { cards, suitNames } from './deck.js';
 import { cardArt, cardBack } from './art.js';
-import { SPREADS, TOPICS, createReading, validateReading, encodeReading, decodeReading, summarizeReading } from './engine.js';
+import { SPREADS, TOPICS, validateReading, encodeReading, decodeReading, summarizeReading } from './engine.js';
 
 const $ = (selector) => document.querySelector(selector);
 document.querySelectorAll('[data-action="support"]').forEach(button => { button.hidden = !supportAvailable(); });
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const deck = new Map(cards.map(card => [card.id, card]));
 const storageKey = 'stellar-tarot-readings-v1';
-const state = { spreadId: 'single', topicId: 'general', question: '', allowReversed: true, pending: null, picked: [], current: null, filter: 'all', search: '', shared: false };
+const state = { spreadId: 'single', topicId: 'general', question: '', allowReversed: true, pending: null, drawSession: null, picked: [], current: null, filter: 'all', search: '', shared: false };
 let toastTimer;
 let modalTrigger;
 let history = readHistory();
@@ -51,24 +52,27 @@ function renderHome() {
 }
 function renderRitual() {
   const spread = spreadOf(state.spreadId);
-  return `<div class="container fade-in"><div class="page-top"><a href="#home" class="back-link">← 回到星间</a><p class="eyebrow">MAKE SPACE FOR YOURSELF</p><h1 class="page-title">先安静一下，听听自己。</h1><p class="page-subtitle">不必急着找到答案。带着一个问题，或只是带着此刻的你。</p></div><div class="ritual-layout"><form id="reading-form" class="ritual-form"><label class="field-label">今天想聊聊什么？</label><div class="topic-options" role="group" aria-label="选择占卜主题">${TOPICS.map(topic => `<button type="button" class="topic-button" data-action="topic" data-id="${topic.id}" aria-pressed="${topic.id === state.topicId}">${topic.name}</button>`).join('')}</div><label class="field-label" for="question">把心里的问题写下来 <small>选填 · <span id="char-count">${state.question.length}</span>/200</small></label><textarea id="question" name="question" maxlength="200" placeholder="${esc(topicOf(state.topicId).prompt)}">${esc(state.question)}</textarea><p class="field-hint">试着问“我可以如何……”；${state.spreadId === 'choice' ? '请在问题中写明选择 A 和选择 B。' : '一个开放的问题，能带来更多看待事情的角度。'}</p><div class="spread-select"><label for="spread">我的牌阵</label><select id="spread" name="spread">${SPREADS.map(item => `<option value="${item.id}" ${item.id === state.spreadId ? 'selected' : ''}>${item.name} · ${item.count} 张牌</option>`).join('')}</select></div><label class="check-row"><input type="checkbox" name="reversed" ${state.allowReversed ? 'checked' : ''}>包含逆位，让解读多一个角度</label><button class="button primary form-submit" type="submit">准备好了，开始洗牌 <span aria-hidden="true">✧</span></button><p class="field-hint">问题默认仅保存在这台设备；选择 AI 深度解读时才会发送至 DeepSeek。</p></form><aside class="ritual-aside"><div class="aside-card">${cardBack()}</div><h3>${spread.name}</h3><p>${spread.description}<br>放松肩膀，慢慢呼吸，<br>留意第一眼吸引你的牌。</p><div class="positions">${spread.positions.map(item => `<span class="position-pill">${item}</span>`).join('')}</div></aside></div></div>`;
+  return `<div class="container fade-in"><div class="page-top"><a href="#home" class="back-link">← 回到星间</a><p class="eyebrow">MAKE SPACE FOR YOURSELF</p><h1 class="page-title">先安静一下，听听自己。</h1><p class="page-subtitle">不必急着找到答案。带着一个问题，或只是带着此刻的你。</p></div><div class="ritual-layout"><form id="reading-form" class="ritual-form"><label class="field-label">今天想聊聊什么？</label><div class="topic-options" role="group" aria-label="选择占卜主题">${TOPICS.map(topic => `<button type="button" class="topic-button" data-action="topic" data-id="${topic.id}" aria-pressed="${topic.id === state.topicId}">${topic.name}</button>`).join('')}</div><label class="field-label" for="question">把心里的问题写下来 <small>选填 · <span id="char-count">${state.question.length}</span>/200</small></label><textarea id="question" name="question" maxlength="200" placeholder="${esc(topicOf(state.topicId).prompt)}">${esc(state.question)}</textarea><p class="field-hint">试着问“我可以如何……”；${state.spreadId === 'choice' ? '请在问题中写明选择 A 和选择 B。' : '一个开放的问题，能带来更多看待事情的角度。'}</p><div class="spread-select"><label for="spread">我的牌阵</label><select id="spread" name="spread">${SPREADS.map(item => `<option value="${item.id}" ${item.id === state.spreadId ? 'selected' : ''}>${item.name} · ${item.count} 张牌</option>`).join('')}</select></div><label class="check-row"><input type="checkbox" name="reversed" ${state.allowReversed ? 'checked' : ''}>包含逆位，让解读多一个角度</label><button class="button primary form-submit" type="submit">准备好了，开始洗牌 <span aria-hidden="true">✧</span></button><p class="field-hint">问题保存在这台设备。抽牌后可复制完整提问，去 DeepSeek 获得 AI 分析。</p></form><aside class="ritual-aside"><div class="aside-card">${cardBack()}</div><h3>${spread.name}</h3><p>${spread.description}<br>放松肩膀，慢慢呼吸，<br>留意第一眼吸引你的牌。</p><div class="positions">${spread.positions.map(item => `<span class="position-pill">${item}</span>`).join('')}</div></aside></div></div>`;
 }
 function renderDraw() {
   if (!state.pending) { go('ritual'); return ''; }
   const spread = spreadOf(state.pending.spreadId);
   const complete = state.picked.length === spread.count;
-  return `<div class="container draw-page fade-in"><div class="page-top"><a href="#ritual" class="back-link">← 调整我的问题</a><p class="eyebrow">LET YOUR INTUITION LEAD</p><h1 class="page-title">慢慢来，让直觉选一张。</h1><p class="page-subtitle">牌已洗好。从下方选出 ${spread.count} 张牌，照见此刻的你。</p></div><div class="draw-progress" aria-label="抽牌进度">${Array.from({length:spread.count},(_,i)=>`<span class="progress-dot ${i < state.picked.length ? 'selected' : ''}">${i < state.picked.length ? '✓' : i+1}</span>`).join('')}</div><div class="draw-grid">${Array.from({length:12}, (_,index) => drawButton(index)).join('')}</div><p class="draw-help" id="draw-help" aria-live="polite">${complete ? '你的牌已经相遇。准备好听听它们的故事了吗？' : `请选出第 ${state.picked.length+1} 张牌 · ${spread.positions[state.picked.length]}`}</p><button class="button primary" id="show-result" data-action="show-result" ${complete ? '' : 'disabled'}>查看我的解读 <span aria-hidden="true">→</span></button></div>`;
+  return `<div class="container draw-page fade-in"><div class="page-top"><a href="#ritual" class="back-link">← 调整我的问题</a><p class="eyebrow">LET YOUR INTUITION LEAD</p><h1 class="page-title">跟随直觉，慢慢选牌。</h1><p class="page-subtitle">完整 78 张牌已洗好。从下方选出 ${spread.count} 张牌，照见此刻的你。</p></div><div class="draw-toolbar"><div class="draw-progress" aria-label="抽牌进度">${Array.from({length:spread.count},(_,i)=>`<span class="progress-dot ${i < state.picked.length ? 'selected' : ''}">${i < state.picked.length ? '✓' : i+1}</span>`).join('')}</div><p class="draw-help" id="draw-help" aria-live="polite">${complete ? '你的牌已经相遇。准备好听听它们的故事了吗？' : `请选出第 ${state.picked.length+1} 张牌 · ${spread.positions[state.picked.length]}`}</p><div class="draw-selection" id="draw-selection">${selectedDraws()}</div><button class="button primary" id="show-result" data-action="show-result" ${complete ? '' : 'disabled'}>查看我的解读 <span aria-hidden="true">→</span></button></div><p class="deck-count">完整牌组 · 78 张 · 每张只能选择一次</p><div class="draw-grid">${Array.from({length:state.drawSession.pile.length}, (_,index) => drawButton(index)).join('')}</div></div>`;
 }
 function drawButton(index) {
   const slot = state.picked.indexOf(index);
   const chosen = slot >= 0;
-  const complete = state.picked.length === state.pending.cards.length;
+  const complete = state.picked.length === spreadOf(state.pending.spreadId).count;
   const card = chosen ? state.pending.cards[slot] : null;
-  return `<button class="draw-card ${chosen ? 'chosen' : complete ? 'inactive' : ''}" data-action="pick" data-index="${index}" aria-label="${chosen ? `已选：${deck.get(card.cardId).name}` : `选择第 ${index+1} 张牌`}" ${chosen || complete ? 'disabled' : ''}><span class="card-visual">${chosen ? `<span class="${card.reversed ? 'reversed-art' : ''}" style="display:block">${cardArt(deck.get(card.cardId))}</span>` : cardBack()}</span>${chosen ? `<span class="picked-number">${slot+1}</span>` : ''}</button>`;
+  return `<button class="draw-card ${chosen ? 'chosen' : complete ? 'inactive' : ''}" data-action="pick" data-index="${index}" aria-label="${chosen ? `已选：${deck.get(card.cardId).name}` : `选择第 ${index+1} 张牌，共 78 张`}" ${chosen || complete ? 'disabled' : ''}><span class="card-visual">${chosen ? `<span class="${card.reversed ? 'reversed-art' : ''}" style="display:block">${cardArt(deck.get(card.cardId))}</span>` : cardBack()}</span>${chosen ? `<span class="picked-number">${slot+1}</span>` : ''}</button>`;
 }
+function selectedDraws() { return state.pending.cards.map((pick,index)=>`<span>${index+1}. ${esc(deck.get(pick.cardId).name)} · ${pick.reversed?'逆位':'正位'}</span>`).join(''); }
 function pickCard(index) {
-  if (!state.pending || !Number.isInteger(index) || index < 0 || index > 11 || state.picked.includes(index) || state.picked.length >= state.pending.cards.length) return;
+  if (!state.pending || !state.drawSession || !Number.isInteger(index) || index < 0 || index >= state.drawSession.pile.length || state.picked.includes(index) || state.picked.length >= spreadOf(state.pending.spreadId).count) return;
+  selectDraw(state.drawSession,index);
   state.picked.push(index);
+  $('#draw-selection').innerHTML=selectedDraws();
   const selected = $(`[data-action="pick"][data-index="${index}"]`);
   selected.outerHTML = drawButton(index);
   const spread = spreadOf(state.pending.spreadId);
@@ -83,7 +87,7 @@ function pickCard(index) {
 function renderResult(reading, shared=false) {
   state.current=reading; state.shared=shared;
   const spread=spreadOf(reading.spreadId), summary=summarizeReading(reading,cards);
-  return `<div class="container results fade-in"><div class="result-top"><p class="eyebrow">${shared ? 'A READING SHARED WITH YOU' : 'A MOMENT OF CLARITY'}</p><h1 class="page-title">${shared ? '与你分享，一点星光。' : '这些牌，此刻与你相遇。'}</h1><p class="result-meta">${spread.name} · ${topicOf(reading.topicId).name} · ${formatDate(reading.createdAt)}</p>${reading.question ? `<p class="question-display">“ ${esc(reading.question)} ”</p>` : ''}</div><div class="result-cards">${reading.cards.map((pick,index)=>{const card=deck.get(pick.cardId);return `<article class="result-card"><p class="position-label">${String(index+1).padStart(2,'0')} / ${spread.positions[index]}</p><button class="card-frame ${pick.reversed ? 'reversed-art' : ''}" data-action="card-detail" data-id="${card.id}" aria-label="查看${card.name}的完整牌意">${cardArt(card)}</button><h3>${card.name}<span class="orientation">${pick.reversed ? '逆位' : '正位'}</span></h3><p class="keywords">${card.keywords.join(' · ')}</p></article>`;}).join('')}</div><div class="reading-content">${renderAIPanel(reading)}<p class="base-reading-label">基础牌意 · 随时可读</p><section class="reading-summary"><p class="eyebrow">THE THREAD BETWEEN YOUR CARDS</p><h2>${esc(summary.title)}</h2><p style="white-space:pre-line">${esc(summary.overview)}</p></section>${reading.cards.map((pick,index)=>{const card=deck.get(pick.cardId),meaning=pick.reversed?card.reversed:card.upright;return `<article class="interpretation"><h3><small>${String(index+1).padStart(2,'0')}</small>${spread.positions[index]}<small>— ${card.name} · ${pick.reversed?'逆位':'正位'}</small></h3><p>${esc(meaning.meaning)}</p><p class="advice">✧ 给你的提醒：${esc(meaning.advice)}</p></article>`;}).join('')}<div class="reflection"><section><h3>☽ 留给自己的一个问题</h3><p>${esc(summary.reflection)}</p></section><section><h3>✧ 可以试试的一小步</h3><p>${esc(summary.action)}</p></section></div><div class="result-actions"><button class="button primary" data-action="share">分享这份星光 ↗</button><button class="button secondary" data-action="download">保存解读 ↓</button>${shared ? '<button class="button secondary" data-action="save-shared">收藏这份解读 ＋</button>' : ''}<a class="button secondary" href="#ritual">再一次对话 ↻</a></div>${renderSupportCallout()}<p class="result-footnote">${shared ? '分享者主动分享的牌面与解读。' : '记录保存在当前浏览器中，最多保留最近 50 次。'}<br>基础牌意来自预设规则；AI 深度解读由 DeepSeek 另行生成。</p></div></div>`;
+  return `<div class="container results fade-in"><div class="result-top"><p class="eyebrow">${shared ? 'A READING SHARED WITH YOU' : 'A MOMENT OF CLARITY'}</p><h1 class="page-title">${shared ? '与你分享，一点星光。' : '这些牌，此刻与你相遇。'}</h1><p class="result-meta">${spread.name} · ${topicOf(reading.topicId).name} · ${formatDate(reading.createdAt)}</p>${reading.question ? `<p class="question-display">“ ${esc(reading.question)} ”</p>` : ''}</div><div class="result-cards">${reading.cards.map((pick,index)=>{const card=deck.get(pick.cardId);return `<article class="result-card"><p class="position-label">${String(index+1).padStart(2,'0')} / ${spread.positions[index]}</p><button class="card-frame ${pick.reversed ? 'reversed-art' : ''}" data-action="card-detail" data-id="${card.id}" aria-label="查看${card.name}的完整牌意">${cardArt(card)}</button><h3>${card.name}<span class="orientation">${pick.reversed ? '逆位' : '正位'}</span></h3><p class="keywords">${card.keywords.join(' · ')}</p></article>`;}).join('')}</div><div class="reading-content">${renderAIPanel(reading)}<p class="base-reading-label">基础牌意 · 按牌面与主题整理</p><p class="base-reading-note">以下是预设牌意与主题建议，不会深入分析你写下的具体问题。想获得针对问题的分析，可使用上方的完整提问。</p><section class="reading-summary"><p class="eyebrow">THE THREAD BETWEEN YOUR CARDS</p><h2>${esc(summary.title)}</h2><p style="white-space:pre-line">${esc(summary.overview)}</p></section>${reading.cards.map((pick,index)=>{const card=deck.get(pick.cardId),meaning=pick.reversed?card.reversed:card.upright;return `<article class="interpretation"><h3><small>${String(index+1).padStart(2,'0')}</small>${spread.positions[index]}<small>— ${card.name} · ${pick.reversed?'逆位':'正位'}</small></h3><p>${esc(meaning.meaning)}</p><p class="advice">✧ 给你的提醒：${esc(meaning.advice)}</p></article>`;}).join('')}<div class="reflection"><section><h3>☽ 留给自己的一个问题</h3><p>${esc(summary.reflection)}</p></section><section><h3>✧ 可以试试的一小步</h3><p>${esc(summary.action)}</p></section></div><div class="result-actions"><button class="button primary" data-action="share">分享这份星光 ↗</button><button class="button secondary" data-action="download">保存解读 ↓</button>${shared ? '<button class="button secondary" data-action="save-shared">收藏这份解读 ＋</button>' : ''}<a class="button secondary" href="#ritual">再一次对话 ↻</a></div>${renderSupportCallout()}<p class="result-footnote">${shared ? '分享者主动分享的牌面与解读。' : '记录保存在当前浏览器中，最多保留最近 50 次。'}<br>基础牌意来自预设规则；新的 AI 解读请在 DeepSeek 中查看和保存。</p></div></div>`;
 }
 function filteredCards() { const query=state.search.toLowerCase().trim();return cards.filter(card=>(state.filter==='all'||card.suit===state.filter)&&(!query||`${card.name} ${card.english} ${card.keywords.join(' ')}`.toLowerCase().includes(query))); }
 function libraryItems() { return filteredCards().map(card=>`<button class="library-card" data-action="card-detail" data-id="${card.id}" aria-label="查看${card.name}牌意">${cardArt(card)}<h3>${card.name}</h3><p>${card.keywords.join(' · ')}</p></button>`).join(''); }
@@ -108,6 +112,23 @@ async function copyLink() {
  const url=shareUrl();
  try { await navigator.clipboard.writeText(url);toast('链接已复制，发给想分享的朋友吧。'); }
  catch { $('#share-url').focus();$('#share-url').select();toast('请长按或按 Ctrl/Cmd+C 复制已选中的链接。'); }
+}
+async function copyAIPrompt(button) {
+ const reading=state.current;if(!reading)return;
+ const panel=button.closest('#ai-panel');
+ const prompt=buildReadingPrompt(reading);
+ button.disabled=true;
+ try {
+  await navigator.clipboard.writeText(prompt);
+  if(!panel.isConnected)return;
+  button.textContent='已复制，可再次复制 ⧉';
+  panel.querySelector('#ai-copy-status').textContent='提问已复制。打开 DeepSeek，在对话框粘贴并发送。';
+ } catch {
+  if(!panel.isConnected)return;
+  panel.querySelector('#ai-prompt-preview').open=true;
+  const field=panel.querySelector('#ai-prompt-text');field.focus();field.select();field.setSelectionRange(0,field.value.length);
+  panel.querySelector('#ai-copy-status').textContent='浏览器未允许自动复制。请长按或按 Ctrl/Cmd+C 复制下方已选中的提问，再打开 DeepSeek。';
+ } finally {button.disabled=false;}
 }
 function downloadReading() {
  if(!state.current)return;
@@ -146,7 +167,7 @@ document.addEventListener('change',event=>{
 });
 document.addEventListener('submit',event=>{
  if(event.target.id!=='reading-form')return;event.preventDefault();
- try { state.pending=createReading({spreadId:state.spreadId,topicId:state.topicId,question:state.question,allowReversed:state.allowReversed},cards);state.picked=[];go('draw'); }
+ try { state.drawSession=prepareDrawSession({spreadId:state.spreadId,topicId:state.topicId,question:state.question,allowReversed:state.allowReversed},cards);state.pending=state.drawSession.reading;state.picked=[];go('draw'); }
  catch(error){toast(error.message||'暂时无法抽牌，请换一个新版浏览器重试。');}
 });
 document.addEventListener('click',async event=>{
@@ -155,12 +176,11 @@ document.addEventListener('click',async event=>{
  if(action==='choose-spread'){state.spreadId=id;go('ritual');}
  else if(action==='topic'){state.topicId=id;document.querySelectorAll('.topic-button').forEach(item=>item.setAttribute('aria-pressed',item.dataset.id===id));$('#question').placeholder=topicOf(id).prompt;}
  else if(action==='pick')pickCard(Number(button.dataset.index));
- else if(action==='show-result'){if(!state.pending||state.picked.length!==state.pending.cards.length)return;state.current=state.pending;saveReading(state.current);state.pending=null;go(`saved=${state.current.id}`);}
+ else if(action==='show-result'){if(!state.pending||state.picked.length!==spreadOf(state.pending.spreadId).count)return;state.current=state.pending;saveReading(state.current);state.pending=null;state.drawSession=null;go(`saved=${state.current.id}`);}
  else if(action==='card-detail')cardDetail(id);
  else if(action==='filter'){state.filter=id;document.querySelectorAll('.filter-button').forEach(item=>{item.classList.toggle('active',item.dataset.id===id);item.setAttribute('aria-pressed',item.dataset.id===id);});updateLibrary();}
  else if(action==='open-reading')go(`saved=${id}`);
- else if(action==='ai-generate'){const reading=state.current;if(!reading)return;await generateAI(reading,()=>{if(state.current && readingFingerprint(state.current)===readingFingerprint(reading) && $('#ai-panel')) $('#ai-panel').outerHTML=renderAIPanel(reading);});}
- else if(action==='ai-cancel'){cancelAI(state.current);$('#ai-panel').outerHTML=renderAIPanel(state.current);}
+ else if(action==='ai-copy-prompt')await copyAIPrompt(button);
  else if(action==='share')showShare();
  else if(action==='copy-link')await copyLink();
  else if(action==='native-share'){try{await navigator.share({title:'星间 · 一份与你分享的塔罗解读',text:'送你一点星光，看看这些牌的故事。',url:shareUrl()});}catch(error){if(error.name!=='AbortError')toast('系统分享暂不可用，你可以复制链接。');}}
@@ -171,9 +191,9 @@ document.addEventListener('click',async event=>{
  else if(action==='delete-reading'||action==='clear-history'){
   modal(`<div class="modal-copy"><h2 class="modal-title" id="modal-title">${action==='clear-history'?'清空所有记录？':'告别这次对话？'}</h2><p>记录只保存在当前浏览器，删除后无法恢复。你也可以先下载解读，留作纪念。</p><div class="modal-actions"><button class="button primary" data-action="confirm-delete" data-id="${esc(id||'all')}">确认删除</button><button class="button secondary" data-action="close-modal">再留一会儿</button></div></div>`);
  }else if(action==='confirm-delete'){if(id==='all')clearAIHistory();else {const removed=history.find(item=>item.id===id);if(removed)deleteAI(removed);}history=id==='all'?[]:history.filter(item=>item.id!==id);writeHistory();closeModal();route();toast('记录已删除。');}
- else if(action==='guide')modal('<div class="modal-copy"><p class="eyebrow">A GENTLE BEGINNING</p><h2 class="modal-title" id="modal-title">塔罗，从一次倾听开始。</h2><p>塔罗用图像和象征，帮助我们从不同角度理解感受。星间包含 22 张大阿尔卡纳与 56 张小阿尔卡纳，每张牌都有自己的故事。</p><ol><li><strong>选一个牌阵。</strong>第一次来，可以从“今日一张”开始。</li><li><strong>带着一个开放的问题。</strong>例如“我可以如何面对眼前的变化？”</li><li><strong>凭直觉选牌。</strong>牌面和正逆位在洗牌时随机决定。</li><li><strong>读一读，也问问自己。</strong>留意有共鸣的部分，试着写下想法。</li></ol><p>逆位不等于坏事，也可能提醒你停一停、向内看。牌无法读出他人的想法，也不会决定未来；你始终拥有自己的选择。</p><div class="modal-actions"><button class="button primary" data-action="start-from-guide">开始我的第一次占卜 ↗</button></div></div>');
+ else if(action==='guide')modal('<div class="modal-copy"><p class="eyebrow">A GENTLE BEGINNING</p><h2 class="modal-title" id="modal-title">塔罗，从一次倾听开始。</h2><p>塔罗用图像和象征，帮助我们从不同角度理解感受。星间包含 22 张大阿尔卡纳与 56 张小阿尔卡纳，每张牌都有自己的故事。</p><ol><li><strong>选一个牌阵。</strong>第一次来，可以从“今日一张”开始。</li><li><strong>带着一个开放的问题。</strong>例如“我可以如何面对眼前的变化？”</li><li><strong>凭直觉选牌。</strong>完整 78 张牌在洗牌时随机排列，并决定正逆位；你点击的位置就是抽到的那张牌。</li><li><strong>读一读，也问问自己。</strong>留意有共鸣的部分，试着写下想法。</li></ol><p>逆位不等于坏事，也可能提醒你停一停、向内看。牌无法读出他人的想法，也不会决定未来；你始终拥有自己的选择。</p><div class="modal-actions"><button class="button primary" data-action="start-from-guide">开始我的第一次占卜 ↗</button></div></div>');
  else if(action==='start-from-guide'){closeModal();go('ritual');}
- else if(action==='privacy')modal('<div class="modal-copy"><h2 class="modal-title" id="modal-title">一个留给自己的空间。</h2><p><strong>你的记录</strong><br>问题与抽牌记录仅保存在当前浏览器的本地存储中，最多 50 条。只有你主动点击“生成 AI 深度解读”时，当前问题、主题和牌面才会通过后端发送给 DeepSeek；生成结果保存在当前浏览器。清除浏览器数据或使用无痕模式可能使记录丢失。</p><p><strong>分享给朋友</strong><br>分享链接包含牌面、牌阵、主题和时间。问题默认不分享，只有勾选后才会加入。AI 解读不写入分享链接；下载文本会包含已生成的 AI 解读。持有链接的人可以读取分享内容。</p><p><strong>关于解读</strong><br>基础牌意采用预设中文牌意与本地规则。AI 深度解读由 DeepSeek 根据你提供的问题生成，可能存在偏差，不构成事实判断，也不代替专业意见。AI 后端不保存问题或解读文本，只记录匿名限流计数；DeepSeek 会按其政策处理请求。洗牌使用浏览器的随机数功能。</p><p><strong>关于网站</strong><br>页面由 GitHub Pages 托管，字体可能从 Google Fonts 加载；这些服务会按其政策处理访问请求。星间不接入广告、追踪统计或账户系统。</p></div>');
+ else if(action==='privacy')modal('<div class="modal-copy"><h2 class="modal-title" id="modal-title">一个留给自己的空间。</h2><p><strong>你的记录</strong><br>问题与抽牌记录保存在当前浏览器的本地存储中，最多 50 条。清除浏览器数据或使用无痕模式可能使记录丢失。以前保存在此设备上的 AI 解读仍可查看和下载。</p><p><strong>使用 AI 解读</strong><br>星间在本地整理问题、主题、牌阵、牌名与正逆位；复制按钮只将内容写入剪贴板，不会发送 AI 请求。你可以检查提问，再到 DeepSeek 或其他 AI 应用粘贴发送。对方可能要求登录，并会按自己的政策处理你提交的内容。新解读显示在对方应用中，不会自动保存回星间。</p><p><strong>分享给朋友</strong><br>分享链接包含牌面、牌阵、主题和时间。问题默认不分享，只有勾选后才会加入。AI 解读不写入分享链接；下载文本会包含此设备已有的 AI 解读。持有链接的人可以读取分享内容。</p><p><strong>关于解读</strong><br>基础牌意采用预设中文牌意与本地规则，不会深入理解具体问题。抽牌从完整的 78 张牌中进行，使用浏览器的随机数功能。AI 分析可能存在偏差，请结合真实处境判断。</p><p><strong>关于网站</strong><br>页面由 GitHub Pages 托管，字体可能从 Google Fonts 加载；这些服务会按其政策处理访问请求。星间不接入广告、追踪统计或账户系统。</p></div>');
 });
 window.addEventListener('hashchange',route);
 window.addEventListener('storage',event=>{if(event.key===storageKey||event.key===null){history=readHistory();if(location.hash==='#journal')route();}});
