@@ -31,10 +31,25 @@ function analysis(source = reading()) {
   };
 }
 
-function providerResult(result = analysis(), finishReason = 'stop') {
-  return new Response(JSON.stringify({ choices: [{ finish_reason: finishReason, message: { content: JSON.stringify(result) } }] }), {
+function toolArguments(result = analysis()) {
+  return {
+    ...result,
+    cardInsights: Object.fromEntries(result.cardInsights.map((insight) => [insight.cardId, insight.interpretation])),
+    actions: { first: result.actions[0], second: result.actions[1], third: result.actions[2] },
+  };
+}
+
+function toolResponse(args = toolArguments(), finishReason = 'tool_calls', name = 'submit_tarot_analysis') {
+  return new Response(JSON.stringify({ choices: [{ finish_reason: finishReason, message: {
+    content: null,
+    tool_calls: [{ id: 'call_test', type: 'function', function: { name, arguments: typeof args === 'string' ? args : JSON.stringify(args) } }],
+  } }] }), {
     headers: { 'Content-Type': 'application/json' },
   });
+}
+
+function providerResult(result = analysis(), finishReason = 'tool_calls') {
+  return toolResponse(toolArguments(result), finishReason);
 }
 
 function request(body = { reading: reading() }, options = {}) {
@@ -90,13 +105,33 @@ test('uses fixed DeepSeek endpoint and canonical position, reverse meaning and a
   assert.equal(calls.quota.length, 1);
   assert.equal(calls.fetch.length, 1);
   const [url, init] = calls.fetch[0];
-  assert.equal(url, 'https://api.deepseek.com/chat/completions');
+  assert.equal(url, 'https://api.deepseek.com/beta/chat/completions');
   assert.equal(init.headers.Authorization, `Bearer ${API_SECRET}`);
   assert.ok(init.signal instanceof AbortSignal);
   const payload = JSON.parse(init.body);
   assert.equal(payload.model, 'deepseek-flash');
   assert.deepEqual(payload.thinking, { type: 'disabled' });
-  assert.deepEqual(payload.response_format, { type: 'json_object' });
+  assert.equal('response_format' in payload, false);
+  assert.deepEqual(payload.tool_choice, { type: 'function', function: { name: 'submit_tarot_analysis' } });
+  assert.equal(payload.tools.length, 1);
+  const tool = payload.tools[0];
+  assert.equal(tool.type, 'function');
+  assert.equal(tool.function.strict, true);
+  assert.equal(tool.function.name, 'submit_tarot_analysis');
+  const schema = tool.function.parameters;
+  assert.deepEqual(Object.keys(schema.properties.cardInsights.properties), input.cards.map((draw) => draw.cardId));
+  assert.deepEqual(Object.keys(schema.properties.actions.properties), ['first', 'second', 'third']);
+  function assertStrictObject(node) {
+    if (node.type === 'object') {
+      assert.equal(node.additionalProperties, false);
+      assert.deepEqual(node.required, Object.keys(node.properties));
+      Object.values(node.properties).forEach(assertStrictObject);
+    } else {
+      assert.equal(node.type, 'string');
+    }
+    for (const unsupported of ['minItems', 'maxItems', 'minLength', 'maxLength']) assert.equal(unsupported in node, false);
+  }
+  assertStrictObject(schema);
   assert.equal(payload.max_tokens, 2600);
   assert.equal(payload.stream, false);
   assert.equal(payload.messages.length, 2);
@@ -134,7 +169,7 @@ test('keeps injected question instructions in user data, never in the system mes
   const payload = JSON.parse(calls.fetch[0][1].body);
   assert.ok(!payload.messages[0].content.includes(injection));
   assert.equal(JSON.parse(payload.messages[1].content).question, injection);
-  assert.equal(calls.fetch[0][0], 'https://api.deepseek.com/chat/completions');
+  assert.equal(calls.fetch[0][0], 'https://api.deepseek.com/beta/chat/completions');
 });
 
 test('rejects forged fields, duplicate cards, invalid IDs and nonboolean orientation before spending quota', async () => {
@@ -294,7 +329,7 @@ test('the 75-second deadline aborts an in-flight provider request', async (t) =>
   assert.equal((await response.json()).error.code, 'AI_TIMEOUT');
 });
 
-test('truncated, malformed, overlong and reordered model responses fail validation', async () => {
+test('truncated, malformed, overlong and mismatched model responses fail validation', async () => {
   const invalid = [
     () => providerResult(analysis(), 'length'),
     () => new Response('not-json'),
@@ -304,7 +339,6 @@ test('truncated, malformed, overlong and reordered model responses fail validati
     () => providerResult({ ...analysis(), synthesis: '\u0000bad' }),
     () => providerResult({ ...analysis(), actions: ['one'] }),
     () => providerResult({ ...analysis(), actions: ['one', 'two', 'x'.repeat(601)] }),
-    () => providerResult({ ...analysis(), cardInsights: analysis().cardInsights.toReversed() }),
     () => providerResult({ ...analysis(), cardInsights: [{ cardId: 'fake', interpretation: 'wrong' }, ...analysis().cardInsights.slice(1)] }),
     () => providerResult({ ...analysis(), cardInsights: [{ ...analysis().cardInsights[0], interpretation: 'x'.repeat(2401) }, ...analysis().cardInsights.slice(1)] }),
     () => providerResult({ ...analysis(), leakedField: API_SECRET }),
@@ -317,6 +351,75 @@ test('truncated, malformed, overlong and reordered model responses fail validati
     const body = await response.json();
     assert.equal(body.error.code, 'INVALID_AI_RESPONSE');
     assert.ok(!JSON.stringify(body).includes(API_SECRET));
+  }
+});
+
+test('maps provider card objects back to the exact input order and preserves the frontend schema', async () => {
+  const value = toolArguments();
+  value.cardInsights = Object.fromEntries(Object.entries(value.cardInsights).toReversed());
+  const { handle } = fixture({ fetchImpl: async () => toolResponse(value) });
+  const response = await handle(request());
+  assert.equal(response.status, 200);
+  assert.deepEqual((await response.json()).analysis, analysis());
+});
+
+test('rejects missing cards, additional cards and incomplete action objects', async () => {
+  const missingCard = toolArguments();
+  delete missingCard.cardInsights[cards[0].id];
+  const additionalCard = toolArguments();
+  additionalCard.cardInsights['major-21'] = '多出的牌';
+  const missingAction = toolArguments();
+  delete missingAction.actions.third;
+  const additionalAction = toolArguments();
+  additionalAction.actions.fourth = '多出的行动';
+  for (const value of [missingCard, additionalCard, missingAction, additionalAction]) {
+    const { handle } = fixture({ fetchImpl: async () => toolResponse(value) });
+    const response = await handle(request());
+    assert.equal(response.status, 502);
+    assert.equal((await response.json()).error.code, 'INVALID_AI_RESPONSE');
+  }
+});
+
+test('accepts only one named output call and never executes provider tools or makes a second request', async () => {
+  const ordinary = await toolResponse().json();
+  const multiple = structuredClone(ordinary);
+  multiple.choices[0].message.tool_calls.push(structuredClone(multiple.choices[0].message.tool_calls[0]));
+  const missing = structuredClone(ordinary);
+  missing.choices[0].message.tool_calls = [];
+  const invalidType = structuredClone(ordinary);
+  invalidType.choices[0].message.tool_calls[0].type = 'unexpected';
+  const invalid = [
+    () => toolResponse(toolArguments(), 'tool_calls', 'run_shell'),
+    () => toolResponse(toolArguments(), 'stop'),
+    () => toolResponse('{invalid-json'),
+    () => new Response(JSON.stringify(multiple)),
+    () => new Response(JSON.stringify(missing)),
+    () => new Response(JSON.stringify(invalidType)),
+  ];
+  for (const makeResponse of invalid) {
+    let count = 0;
+    const { handle } = fixture({ fetchImpl: async () => { count += 1; return makeResponse(); } });
+    const response = await handle(request());
+    assert.equal(response.status, 502);
+    assert.equal((await response.json()).error.code, 'INVALID_AI_RESPONSE');
+    assert.equal(count, 1);
+  }
+});
+
+test('rejects the legacy repeated-cardId object regression instead of silently losing cards', async () => {
+  const value = analysis();
+  const repeatedFields = value.cardInsights.map((insight) => `"cardId":${JSON.stringify(insight.cardId)},"interpretation":${JSON.stringify(insight.interpretation)}`).join(',');
+  const legacy = JSON.stringify(value).replace(/"cardInsights":\[[\s\S]*?\],"synthesis":/, `"cardInsights":[{${repeatedFields}}],"synthesis":`);
+  assert.equal(JSON.parse(legacy).cardInsights.length, 1); // The original JSON.parse data-loss failure.
+  for (const makeResponse of [
+    () => toolResponse(legacy),
+    () => new Response(JSON.stringify({ choices: [{ finish_reason: 'stop', message: { content: legacy } }] })),
+    () => toolResponse(value),
+  ]) {
+    const { handle } = fixture({ fetchImpl: async () => makeResponse() });
+    const response = await handle(request());
+    assert.equal(response.status, 502);
+    assert.equal((await response.json()).error.code, 'INVALID_AI_RESPONSE');
   }
 });
 
