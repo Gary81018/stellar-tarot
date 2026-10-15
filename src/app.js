@@ -1,10 +1,12 @@
 import { renderAIPanel, generateAI, cancelAI, deleteAI, clearAIHistory, aiDownloadText } from './ai-panel.js';
 import { readingFingerprint } from './ai-client.js';
+import { supportAvailable, renderSupport, bindSupportImages } from './support.js';
 import { cards, suitNames } from './deck.js';
 import { cardArt, cardBack } from './art.js';
 import { SPREADS, TOPICS, createReading, validateReading, encodeReading, decodeReading, summarizeReading } from './engine.js';
 
 const $ = (selector) => document.querySelector(selector);
+$('#support-entry').hidden = !supportAvailable();
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const deck = new Map(cards.map(card => [card.id, card]));
 const storageKey = 'stellar-tarot-readings-v1';
@@ -163,6 +165,7 @@ document.addEventListener('click',async event=>{
  else if(action==='copy-link')await copyLink();
  else if(action==='native-share'){try{await navigator.share({title:'星间 · 一份与你分享的塔罗解读',text:'送你一点星光，看看这些牌的故事。',url:shareUrl()});}catch(error){if(error.name!=='AbortError')toast('系统分享暂不可用，你可以复制链接。');}}
  else if(action==='download')downloadReading();
+ else if(action==='support'&&supportAvailable()){modal(renderSupport());bindSupportImages($('#modal-body'));}
  else if(action==='save-shared'){if(history.some(item=>item.id===state.current.id))toast('这份解读已在记录中，原有问题已保留。');else if(saveReading(state.current))toast('这份星光已收藏到我的记录。');}
  else if(action==='close-modal')closeModal();
  else if(action==='delete-reading'||action==='clear-history'){
