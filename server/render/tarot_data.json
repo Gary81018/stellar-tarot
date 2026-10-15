@@ -1,0 +1,1638 @@
+{
+  "cards": [
+    {
+      "id": "major-0",
+      "number": "0",
+      "name": "愚者",
+      "english": "The Fool",
+      "suit": "major",
+      "keywords": [
+        "启程",
+        "好奇",
+        "信任"
+      ],
+      "upright": {
+        "meaning": "新的可能正在吸引你。无需先看清整条路，也可以带着好奇走出一小步。",
+        "advice": "尝试一件低风险的新鲜事，同时为自己留好退路。"
+      },
+      "reversed": {
+        "meaning": "对未知的憧憬或担忧，可能让你忽略脚下的条件。冲动与拖延都值得被看见。",
+        "advice": "把最想尝试的事拆小，先确认时间、成本和边界。"
+      }
+    },
+    {
+      "id": "major-1",
+      "number": "I",
+      "name": "魔术师",
+      "english": "The Magician",
+      "suit": "major",
+      "keywords": [
+        "资源",
+        "专注",
+        "创造"
+      ],
+      "upright": {
+        "meaning": "你手边已有一些可用的能力与资源。把注意力收回来，想法才有机会成为行动。",
+        "advice": "列出已经拥有的三项资源，今天用其中一项做个小成果。"
+      },
+      "reversed": {
+        "meaning": "想做的事很多，精力却可能分散；也可能过于在意漂亮的呈现。",
+        "advice": "检查承诺与实际行动是否一致，选一件事踏实完成。"
+      }
+    },
+    {
+      "id": "major-2",
+      "number": "II",
+      "name": "女祭司",
+      "english": "The High Priestess",
+      "suit": "major",
+      "keywords": [
+        "直觉",
+        "留白",
+        "倾听"
+      ],
+      "upright": {
+        "meaning": "有些感受还没有清晰的语言。给内心一点安静，暂时不必急着下结论。",
+        "advice": "记录第一反应，再用事实温柔地核对它。"
+      },
+      "reversed": {
+        "meaning": "外界的声音可能盖过自己的感受，或让你把猜测当作答案。",
+        "advice": "区分亲眼知道的事与想象的部分，补问一个具体问题。"
+      }
+    },
+    {
+      "id": "major-3",
+      "number": "III",
+      "name": "皇后",
+      "english": "The Empress",
+      "suit": "major",
+      "keywords": [
+        "滋养",
+        "感官",
+        "生长"
+      ],
+      "upright": {
+        "meaning": "成长需要照料，也需要舒服的空间。你的创造力可能藏在对日常的细致感受中。",
+        "advice": "给身体、居所或一个正在萌芽的想法一点具体照顾。"
+      },
+      "reversed": {
+        "meaning": "你可能忙着照顾所有人，却忽略自己的需要；付出不必以耗尽自己为代价。",
+        "advice": "给自己安排一段不承担他人期待的休息时间。"
+      }
+    },
+    {
+      "id": "major-4",
+      "number": "IV",
+      "name": "皇帝",
+      "english": "The Emperor",
+      "suit": "major",
+      "keywords": [
+        "秩序",
+        "边界",
+        "担当"
+      ],
+      "upright": {
+        "meaning": "清楚的结构可以带来安心。此刻适合明确责任，建立能长期支持你的规则。",
+        "advice": "为最混乱的一件事写下简单流程与可执行的边界。"
+      },
+      "reversed": {
+        "meaning": "过度控制可能让关系失去弹性，也可能是缺少结构使你感到不安。",
+        "advice": "分清必须坚持的底线与可以协商的方式。"
+      }
+    },
+    {
+      "id": "major-5",
+      "number": "V",
+      "name": "教皇",
+      "english": "The Hierophant",
+      "suit": "major",
+      "keywords": [
+        "传统",
+        "学习",
+        "价值"
+      ],
+      "upright": {
+        "meaning": "已有的经验与共同价值可以提供方向。向可信的人学习，也保留独立理解的空间。",
+        "advice": "找一条你认可的原则，想想它如何落实到当下。"
+      },
+      "reversed": {
+        "meaning": "沿用的规则未必仍适合你。你可以尊重经验，同时重新选择自己的立场。",
+        "advice": "问自己：我遵循这条规则，是认同还是害怕不合群？"
+      }
+    },
+    {
+      "id": "major-6",
+      "number": "VI",
+      "name": "恋人",
+      "english": "The Lovers",
+      "suit": "major",
+      "keywords": [
+        "联结",
+        "选择",
+        "一致"
+      ],
+      "upright": {
+        "meaning": "关系与选择都在邀请你诚实面对自己的价值。真正的靠近需要彼此清楚地表达。",
+        "advice": "把你的需要说具体，并认真听见对方的选择。"
+      },
+      "reversed": {
+        "meaning": "期待、行动与内心可能没有对齐。差异并不自动意味着关系没有价值。",
+        "advice": "暂停猜测对方，先厘清自己愿意承担怎样的选择。"
+      }
+    },
+    {
+      "id": "major-7",
+      "number": "VII",
+      "name": "战车",
+      "english": "The Chariot",
+      "suit": "major",
+      "keywords": [
+        "方向",
+        "意志",
+        "推进"
+      ],
+      "upright": {
+        "meaning": "不同的力量正在拉扯你。确定方向后，稳定的节奏比一时冲刺更能带来进展。",
+        "advice": "给一个目标设置下一步、截止时间和可接受的速度。"
+      },
+      "reversed": {
+        "meaning": "忙碌可能掩盖了方向感的缺失，越用力不一定越接近想去的地方。",
+        "advice": "先停下来确认目的，再决定哪些任务值得继续。"
+      }
+    },
+    {
+      "id": "major-8",
+      "number": "VIII",
+      "name": "力量",
+      "english": "Strength",
+      "suit": "major",
+      "keywords": [
+        "勇气",
+        "柔韧",
+        "耐心"
+      ],
+      "upright": {
+        "meaning": "力量也可以是温柔地承认害怕。理解自己的情绪，有助于在压力中保留选择。",
+        "advice": "在回应挑战前慢慢呼吸，用坚定而温和的方式表达。"
+      },
+      "reversed": {
+        "meaning": "持续紧绷可能让你误以为自己不够好。脆弱时也可以请求支持。",
+        "advice": "放下一项不必要的证明，给自己一句真实的鼓励。"
+      }
+    },
+    {
+      "id": "major-9",
+      "number": "IX",
+      "name": "隐者",
+      "english": "The Hermit",
+      "suit": "major",
+      "keywords": [
+        "内省",
+        "独处",
+        "探寻"
+      ],
+      "upright": {
+        "meaning": "短暂离开喧闹，有助于辨认真正重要的事。答案可能需要通过自己的体验形成。",
+        "advice": "留十分钟独处，写下最近反复出现的一个问题。"
+      },
+      "reversed": {
+        "meaning": "独处可能正变成隔绝，或你害怕安静时遇见自己的疑问。",
+        "advice": "在个人空间与可信的交流之间，寻找一个舒服的比例。"
+      }
+    },
+    {
+      "id": "major-10",
+      "number": "X",
+      "name": "命运之轮",
+      "english": "Wheel of Fortune",
+      "suit": "major",
+      "keywords": [
+        "变化",
+        "周期",
+        "适应"
+      ],
+      "upright": {
+        "meaning": "生活包含无法完全掌控的变化。看见周期，可以帮助你把力气用在可调整的部分。",
+        "advice": "分别写下可控制与不可控制的事，只为前者安排动作。"
+      },
+      "reversed": {
+        "meaning": "反复出现的状况可能令人疲惫。与其责怪运气，不如观察自己能改变的回应。",
+        "advice": "从近期的一次重复经历里，找出一个可调整的小环节。"
+      }
+    },
+    {
+      "id": "major-11",
+      "number": "XI",
+      "name": "正义",
+      "english": "Justice",
+      "suit": "major",
+      "keywords": [
+        "公平",
+        "事实",
+        "责任"
+      ],
+      "upright": {
+        "meaning": "清晰的事实和一致的标准能帮助你做判断。选择也意味着理解其带来的责任。",
+        "advice": "听完不同立场，再检查自己的判断依据是否充分。"
+      },
+      "reversed": {
+        "meaning": "片面的信息或苛刻的自我评判，可能影响你看待一件事的方式。",
+        "advice": "补齐缺失的信息，也给自己与他人相同的宽容标准。"
+      }
+    },
+    {
+      "id": "major-12",
+      "number": "XII",
+      "name": "倒吊人",
+      "english": "The Hanged Man",
+      "suit": "major",
+      "keywords": [
+        "暂停",
+        "换位",
+        "放下"
+      ],
+      "upright": {
+        "meaning": "暂缓行动未必是停滞。换一个角度，可能看见原先被效率和惯性遮住的部分。",
+        "advice": "试着从另一位当事人的位置，重新描述这个问题。"
+      },
+      "reversed": {
+        "meaning": "等待可能已经失去意义，或你因不甘心而继续投入不合适的事情。",
+        "advice": "给等待设定复盘时间，确认继续付出是否出于真心。"
+      }
+    },
+    {
+      "id": "major-13",
+      "number": "XIII",
+      "name": "死神",
+      "english": "Death",
+      "suit": "major",
+      "keywords": [
+        "转变",
+        "告别",
+        "更新"
+      ],
+      "upright": {
+        "meaning": "这张牌象征阶段的结束与更新。告别不再适合的习惯，能为新的生活方式腾出空间。",
+        "advice": "选一件可以结束的小事，温柔地完成它的收尾。"
+      },
+      "reversed": {
+        "meaning": "熟悉的模式即使不再合适，也可能令人舍不得。改变可以分阶段发生。",
+        "advice": "先放下一点点，不要求自己一次完成所有告别。"
+      }
+    },
+    {
+      "id": "major-14",
+      "number": "XIV",
+      "name": "节制",
+      "english": "Temperance",
+      "suit": "major",
+      "keywords": [
+        "调和",
+        "节奏",
+        "整合"
+      ],
+      "upright": {
+        "meaning": "不同的需要不一定互相排斥。通过耐心调整，你可以找到更可持续的安排。",
+        "advice": "观察一周的精力分配，为工作与休息各留出位置。"
+      },
+      "reversed": {
+        "meaning": "节奏可能偏向某个极端，忙与闲、付出与接受之间需要重新校准。",
+        "advice": "先调整一个最影响状态的习惯，保持温和且可持续。"
+      }
+    },
+    {
+      "id": "major-15",
+      "number": "XV",
+      "name": "恶魔",
+      "english": "The Devil",
+      "suit": "major",
+      "keywords": [
+        "依附",
+        "欲望",
+        "觉察"
+      ],
+      "upright": {
+        "meaning": "某种习惯、诱惑或期待可能正在限制选择。看见它，是重新拿回主动权的起点。",
+        "advice": "问自己：我是真心想要，还是害怕失去而难以拒绝？"
+      },
+      "reversed": {
+        "meaning": "你可能开始看见束缚的来源。松动旧模式需要练习，反复也不代表失败。",
+        "advice": "为一个想改变的习惯减少触发点，并寻找可信的支持。"
+      }
+    },
+    {
+      "id": "major-16",
+      "number": "XVI",
+      "name": "高塔",
+      "english": "The Tower",
+      "suit": "major",
+      "keywords": [
+        "动摇",
+        "看清",
+        "重建"
+      ],
+      "upright": {
+        "meaning": "当原有看法受到冲击，先给自己一点稳定的空间。重新检查基础，能帮助下一步重建。",
+        "advice": "先处理眼前可做的小事，再判断哪些旧设想需要更新。"
+      },
+      "reversed": {
+        "meaning": "你可能察觉某个结构需要改变，却还在努力维持表面的稳定。",
+        "advice": "提早修补一个已知的问题，让调整发生在可承受的范围。"
+      }
+    },
+    {
+      "id": "major-17",
+      "number": "XVII",
+      "name": "星星",
+      "english": "The Star",
+      "suit": "major",
+      "keywords": [
+        "希望",
+        "修复",
+        "真诚"
+      ],
+      "upright": {
+        "meaning": "安静的希望来自一点点恢复。允许自己按照真实的节奏前进，无需立即证明结果。",
+        "advice": "记下一件仍让你期待的小事，为它留出一点时间。"
+      },
+      "reversed": {
+        "meaning": "疲惫可能暂时遮住了信心。没有感觉到希望时，也可以先从照顾日常开始。",
+        "advice": "回顾最近一个细小的进步，与可信的人分享它。"
+      }
+    },
+    {
+      "id": "major-18",
+      "number": "XVIII",
+      "name": "月亮",
+      "english": "The Moon",
+      "suit": "major",
+      "keywords": [
+        "感受",
+        "模糊",
+        "想象"
+      ],
+      "upright": {
+        "meaning": "信息不完整时，感受与想象容易交织。可以重视直觉，同时保留对事实的耐心。",
+        "advice": "把担心写下来，标出哪些有证据、哪些仍待确认。"
+      },
+      "reversed": {
+        "meaning": "一些疑惑可能逐渐清晰，也可能需要你承认尚未理解的感受。",
+        "advice": "选择一个最容易核实的问题，避免一次追求所有答案。"
+      }
+    },
+    {
+      "id": "major-19",
+      "number": "XIX",
+      "name": "太阳",
+      "english": "The Sun",
+      "suit": "major",
+      "keywords": [
+        "喜悦",
+        "清晰",
+        "活力"
+      ],
+      "upright": {
+        "meaning": "坦诚与简单的快乐能补充能量。让自己看见已经拥有的进展，也愿意与人分享。",
+        "advice": "庆祝一个具体的小成果，用你舒服的方式表达开心。"
+      },
+      "reversed": {
+        "meaning": "你可能太在意理想中的样子，忽略了现实里已经存在的温暖。",
+        "advice": "降低一次表现要求，找回纯粹享受过程的感觉。"
+      }
+    },
+    {
+      "id": "major-20",
+      "number": "XX",
+      "name": "审判",
+      "english": "Judgement",
+      "suit": "major",
+      "keywords": [
+        "回顾",
+        "觉醒",
+        "回应"
+      ],
+      "upright": {
+        "meaning": "回望经历，是为了辨认现在的选择。你可以承认过去，同时用新的理解继续向前。",
+        "advice": "写下一条过去教会你的经验，转化为今天可做的决定。"
+      },
+      "reversed": {
+        "meaning": "对过去的苛责或对评价的担心，可能让你迟迟无法回应内心的想法。",
+        "advice": "将一次失误与自我价值分开，允许自己重新尝试。"
+      }
+    },
+    {
+      "id": "major-21",
+      "number": "XXI",
+      "name": "世界",
+      "english": "The World",
+      "suit": "major",
+      "keywords": [
+        "完成",
+        "整合",
+        "新章"
+      ],
+      "upright": {
+        "meaning": "一个阶段值得被认真收尾。理解一路的积累，可以带着更完整的自己进入下一段旅程。",
+        "advice": "回顾已完成的部分，留一个小仪式为它画上句点。"
+      },
+      "reversed": {
+        "meaning": "事情可能只差最后的整理，也可能是你还没准备好承认一个阶段已经结束。",
+        "advice": "列出真正未完成的事项，区分必要收尾与完美主义。"
+      }
+    },
+    {
+      "id": "wands-1",
+      "number": "ACE",
+      "name": "权杖王牌",
+      "english": "Ace of Wands",
+      "suit": "wands",
+      "keywords": [
+        "灵感",
+        "热情",
+        "起点"
+      ],
+      "upright": {
+        "meaning": "新的灵感带来行动的热度。它不需要马上成熟，可以先通过一个小实验认识它。",
+        "advice": "用二十分钟做出第一版，先让想法有个可以触碰的形状。"
+      },
+      "reversed": {
+        "meaning": "热情可能暂时受阻，或想法太多让你难以开始。能量需要合适的出口。",
+        "advice": "找出最让你心动的部分，把开始的门槛再降低一点。"
+      }
+    },
+    {
+      "id": "wands-2",
+      "number": "2",
+      "name": "权杖二",
+      "english": "Two of Wands",
+      "suit": "wands",
+      "keywords": [
+        "规划",
+        "视野",
+        "抉择"
+      ],
+      "upright": {
+        "meaning": "你开始看见熟悉范围之外的可能。规划的价值，是把愿望变成能比较的选项。",
+        "advice": "为两个选择各写一个收益、代价和最小尝试。"
+      },
+      "reversed": {
+        "meaning": "对未知的犹豫，可能让计划一直停留在脑海里。安全感也可以通过准备建立。",
+        "advice": "补充一条最影响决定的信息，再安排一个小步骤。"
+      }
+    },
+    {
+      "id": "wands-3",
+      "number": "3",
+      "name": "权杖三",
+      "english": "Three of Wands",
+      "suit": "wands",
+      "keywords": [
+        "拓展",
+        "远望",
+        "等待"
+      ],
+      "upright": {
+        "meaning": "已经付出的努力需要时间展开。保持更宽的视角，也留意来自外界的新反馈。",
+        "advice": "检查进展并联系一位能带来不同视角的人。"
+      },
+      "reversed": {
+        "meaning": "进度与期待不一致，可能提示你重新估计条件，而非立即否定整个方向。",
+        "advice": "调整时间表，辨认一个可以主动处理的阻碍。"
+      }
+    },
+    {
+      "id": "wands-4",
+      "number": "4",
+      "name": "权杖四",
+      "english": "Four of Wands",
+      "suit": "wands",
+      "keywords": [
+        "归属",
+        "庆祝",
+        "安定"
+      ],
+      "upright": {
+        "meaning": "共同的喜悦和稳定的空间能够补充力量。阶段性的完成值得被看见。",
+        "advice": "邀请熟悉的人分享一件小好事，或整理一个舒服的角落。"
+      },
+      "reversed": {
+        "meaning": "对归属感的期待可能与现实有差距。属于自己的安定也可以慢慢建立。",
+        "advice": "说清楚什么会让你感到被欢迎，先创造一个小小的仪式。"
+      }
+    },
+    {
+      "id": "wands-5",
+      "number": "5",
+      "name": "权杖五",
+      "english": "Five of Wands",
+      "suit": "wands",
+      "keywords": [
+        "碰撞",
+        "竞争",
+        "磨合"
+      ],
+      "upright": {
+        "meaning": "不同想法正在交汇，摩擦也可能提供新角度。争论前先确认共同想解决的问题。",
+        "advice": "把讨论从谁对谁错，带回各自的需要与具体方案。"
+      },
+      "reversed": {
+        "meaning": "表面和气可能掩盖分歧，也可能是你已经厌倦无效的竞争。",
+        "advice": "选择一个值得讨论的分歧，用平静而直接的话说出来。"
+      }
+    },
+    {
+      "id": "wands-6",
+      "number": "6",
+      "name": "权杖六",
+      "english": "Six of Wands",
+      "suit": "wands",
+      "keywords": [
+        "认可",
+        "进展",
+        "信心"
+      ],
+      "upright": {
+        "meaning": "努力被看见时，可以大方接受肯定。也别忘了成果背后的合作与持续积累。",
+        "advice": "记录自己的贡献，并向帮助过你的人表达感谢。"
+      },
+      "reversed": {
+        "meaning": "外界的认可可能迟迟没来，或你开始过度依赖评价确认价值。",
+        "advice": "为自己设定一项不靠点赞或比较衡量的进步标准。"
+      }
+    },
+    {
+      "id": "wands-7",
+      "number": "7",
+      "name": "权杖七",
+      "english": "Seven of Wands",
+      "suit": "wands",
+      "keywords": [
+        "立场",
+        "坚持",
+        "边界"
+      ],
+      "upright": {
+        "meaning": "面对不同声音时，你可以为重视的事保留立场。坚定并不要求赢下每次争论。",
+        "advice": "选择一个核心边界清楚表达，其余分歧允许存在。"
+      },
+      "reversed": {
+        "meaning": "持续防守容易让人疲惫。你可能需要确认哪些坚持仍值得消耗精力。",
+        "advice": "退出一场无益的争辩，把力量留给真正重要的事。"
+      }
+    },
+    {
+      "id": "wands-8",
+      "number": "8",
+      "name": "权杖八",
+      "english": "Eight of Wands",
+      "suit": "wands",
+      "keywords": [
+        "速度",
+        "消息",
+        "流动"
+      ],
+      "upright": {
+        "meaning": "节奏加快时，清晰的沟通能帮助行动顺畅衔接。及时回应，也留一点核对的空间。",
+        "advice": "把最重要的信息一次说清，确认双方理解一致。"
+      },
+      "reversed": {
+        "meaning": "消息杂乱或进展延迟，可能让你急于催促。先理顺顺序比加速更有帮助。",
+        "advice": "检查一个沟通堵点，给最急的事项明确下一步。"
+      }
+    },
+    {
+      "id": "wands-9",
+      "number": "9",
+      "name": "权杖九",
+      "english": "Nine of Wands",
+      "suit": "wands",
+      "keywords": [
+        "韧性",
+        "警觉",
+        "守护"
+      ],
+      "upright": {
+        "meaning": "过去的经历让你更谨慎，也可能积累了应对困难的能力。坚持时别忽略恢复。",
+        "advice": "保留必要的防护，同时安排一次真正能恢复精力的休息。"
+      },
+      "reversed": {
+        "meaning": "警惕可能占用了太多能量，让每件小事都像新的挑战。",
+        "advice": "分清眼前真实的压力与旧经历带来的预期，寻求分担。"
+      }
+    },
+    {
+      "id": "wands-10",
+      "number": "10",
+      "name": "权杖十",
+      "english": "Ten of Wands",
+      "suit": "wands",
+      "keywords": [
+        "负担",
+        "责任",
+        "减量"
+      ],
+      "upright": {
+        "meaning": "你肩上的任务可能超过了当前能量。认真负责，也包括承认容量有限。",
+        "advice": "把任务分为保留、延后与交给别人，先减掉一项。"
+      },
+      "reversed": {
+        "meaning": "卸下负担的愿望正在出现，但放手可能仍伴随内疚或担心。",
+        "advice": "尝试明确地拒绝一次额外请求，观察实际发生了什么。"
+      }
+    },
+    {
+      "id": "wands-11",
+      "number": "PAGE",
+      "name": "权杖侍从",
+      "english": "Page of Wands",
+      "suit": "wands",
+      "keywords": [
+        "探索",
+        "新意",
+        "试验"
+      ],
+      "upright": {
+        "meaning": "像初学者一样好奇，会让你重新看见可能。试试看本身就能带来信息。",
+        "advice": "选择一项感兴趣的活动，允许自己只体验而不求擅长。"
+      },
+      "reversed": {
+        "meaning": "新鲜感容易很快消退，或你因担心不够好而不敢尝试。",
+        "advice": "把目标改成了解一件事，给探索一个轻松的时间限制。"
+      }
+    },
+    {
+      "id": "wands-12",
+      "number": "KNIGHT",
+      "name": "权杖骑士",
+      "english": "Knight of Wands",
+      "suit": "wands",
+      "keywords": [
+        "冒险",
+        "奔赴",
+        "动能"
+      ],
+      "upright": {
+        "meaning": "行动的冲劲正在升起。带着热情前进，也让计划能够接住这份能量。",
+        "advice": "开始前确认一个风险与一个检查节点，然后专注行动。"
+      },
+      "reversed": {
+        "meaning": "急切可能带来反复改变方向，热情过后也可能留下未完成的承诺。",
+        "advice": "放慢一个决定，先完成已经开始的最小部分。"
+      }
+    },
+    {
+      "id": "wands-13",
+      "number": "QUEEN",
+      "name": "权杖王后",
+      "english": "Queen of Wands",
+      "suit": "wands",
+      "keywords": [
+        "自信",
+        "温暖",
+        "表达"
+      ],
+      "upright": {
+        "meaning": "自然地表达自己，可以为关系和创作带来活力。你的热情无需得到每个人认可。",
+        "advice": "在一个舒服的场合表达真实想法，也给别人发光的空间。"
+      },
+      "reversed": {
+        "meaning": "比较或过度付出，可能让原本的热情变得紧张。你也需要被照顾。",
+        "advice": "把注意力收回自己的兴趣，减少一次不必要的比较。"
+      }
+    },
+    {
+      "id": "wands-14",
+      "number": "KING",
+      "name": "权杖国王",
+      "english": "King of Wands",
+      "suit": "wands",
+      "keywords": [
+        "愿景",
+        "带领",
+        "决断"
+      ],
+      "upright": {
+        "meaning": "清晰的方向能聚集行动。用长期视角做决定，同时为他人的主动性留空间。",
+        "advice": "说清共同目标，把实现方式留出讨论和试验的余地。"
+      },
+      "reversed": {
+        "meaning": "对结果的急切可能变成强势，或宏大的愿景缺少可执行的安排。",
+        "advice": "听取一条不同意见，再把目标落实为一个具体步骤。"
+      }
+    },
+    {
+      "id": "cups-1",
+      "number": "ACE",
+      "name": "圣杯王牌",
+      "english": "Ace of Cups",
+      "suit": "cups",
+      "keywords": [
+        "敞开",
+        "感受",
+        "新生"
+      ],
+      "upright": {
+        "meaning": "新的感受或温柔的联结值得被留意。允许情绪流动，不必急着给它一个定义。",
+        "advice": "真诚表达一次感谢，也给自己的感受一点安静的空间。"
+      },
+      "reversed": {
+        "meaning": "感受可能被压住，或你正把太多情绪独自装在心里。照顾自己也是爱的方向。",
+        "advice": "用写作、散步或可信的交谈，为情绪找一个出口。"
+      }
+    },
+    {
+      "id": "cups-2",
+      "number": "2",
+      "name": "圣杯二",
+      "english": "Two of Cups",
+      "suit": "cups",
+      "keywords": [
+        "互信",
+        "回应",
+        "相遇"
+      ],
+      "upright": {
+        "meaning": "平等的交流能够增进理解。留意彼此是否都能表达需要，也愿意回应对方。",
+        "advice": "开展一次专心的对话，轮流说与听，不急着给建议。"
+      },
+      "reversed": {
+        "meaning": "关系中的投入或理解可能不够对等。先澄清期待，有助于看见真正的分歧。",
+        "advice": "用我感到、我需要开头，说清一件具体的事。"
+      }
+    },
+    {
+      "id": "cups-3",
+      "number": "3",
+      "name": "圣杯三",
+      "english": "Three of Cups",
+      "suit": "cups",
+      "keywords": [
+        "友情",
+        "分享",
+        "陪伴"
+      ],
+      "upright": {
+        "meaning": "朋友与群体的支持能带来轻松感。共同分享日常，也是一种温柔的补给。",
+        "advice": "联系一位让你自在的人，安排简单而没有负担的相聚。"
+      },
+      "reversed": {
+        "meaning": "社交可能变成消耗，或你在群体里难以保持自己的节奏。",
+        "advice": "选择让你放松的陪伴，允许自己拒绝不想参加的聚会。"
+      }
+    },
+    {
+      "id": "cups-4",
+      "number": "4",
+      "name": "圣杯四",
+      "english": "Four of Cups",
+      "suit": "cups",
+      "keywords": [
+        "停顿",
+        "倦意",
+        "觉察"
+      ],
+      "upright": {
+        "meaning": "提不起兴趣时，不必强迫自己热情。停下来辨认疲惫，也留意身边的小机会。",
+        "advice": "换一个日常场景，看看自己的需要是否因此更清楚。"
+      },
+      "reversed": {
+        "meaning": "你可能开始重新愿意参与，也可能仍在逃避一种不舒服的感受。",
+        "advice": "从一个低压力的邀请开始，留意身体与情绪的反馈。"
+      }
+    },
+    {
+      "id": "cups-5",
+      "number": "5",
+      "name": "圣杯五",
+      "english": "Five of Cups",
+      "suit": "cups",
+      "keywords": [
+        "失落",
+        "接纳",
+        "余温"
+      ],
+      "upright": {
+        "meaning": "失望需要被认真承认。看见尚在的支持，不意味着要立即抹去难过。",
+        "advice": "给失落留一点时间，然后联系一份仍可获得的支持。"
+      },
+      "reversed": {
+        "meaning": "你可能正在慢慢与遗憾相处，也可能担心放下就否定了曾经的重视。",
+        "advice": "允许自己带着记忆继续生活，为今天安排一件温柔的小事。"
+      }
+    },
+    {
+      "id": "cups-6",
+      "number": "6",
+      "name": "圣杯六",
+      "english": "Six of Cups",
+      "suit": "cups",
+      "keywords": [
+        "回忆",
+        "善意",
+        "单纯"
+      ],
+      "upright": {
+        "meaning": "熟悉的回忆能提醒你重视什么。让过去的温暖滋养今天，同时看见现实的变化。",
+        "advice": "找回一个曾让你开心的小爱好，用现在的方式重试。"
+      },
+      "reversed": {
+        "meaning": "怀念可能让过去显得比现实更美好，也可能是旧期待仍在影响现在。",
+        "advice": "写下过去与现在各自真实的需要，允许它们不同。"
+      }
+    },
+    {
+      "id": "cups-7",
+      "number": "7",
+      "name": "圣杯七",
+      "english": "Seven of Cups",
+      "suit": "cups",
+      "keywords": [
+        "想象",
+        "选项",
+        "辨别"
+      ],
+      "upright": {
+        "meaning": "丰富的可能令人心动，也容易让注意力分散。把愿望放回现实条件中观察。",
+        "advice": "选出最重要的一个标准，用它筛掉暂时不合适的选项。"
+      },
+      "reversed": {
+        "meaning": "幻想可能正在变得清晰，或太多比较已让你失去选择的耐心。",
+        "advice": "先验证一个最关键的假设，让行动提供新的信息。"
+      }
+    },
+    {
+      "id": "cups-8",
+      "number": "8",
+      "name": "圣杯八",
+      "english": "Eight of Cups",
+      "suit": "cups",
+      "keywords": [
+        "离开",
+        "寻找",
+        "诚实"
+      ],
+      "upright": {
+        "meaning": "当熟悉的事已无法满足重要需要，承认这一点需要勇气。探索可以有准备地进行。",
+        "advice": "写清你想离开的原因，以及希望靠近的具体生活状态。"
+      },
+      "reversed": {
+        "meaning": "离开与留下之间的犹豫，可能提示你还有需要澄清的期待。",
+        "advice": "先做一项可逆的调整，观察它是否回应了真正的需要。"
+      }
+    },
+    {
+      "id": "cups-9",
+      "number": "9",
+      "name": "圣杯九",
+      "english": "Nine of Cups",
+      "suit": "cups",
+      "keywords": [
+        "满足",
+        "享受",
+        "心愿"
+      ],
+      "upright": {
+        "meaning": "看见眼前的满足，会让努力更有意义。你可以允许自己享受已经获得的快乐。",
+        "advice": "列出三件此刻已拥有的好事，为其中一件认真停留。"
+      },
+      "reversed": {
+        "meaning": "想象中的满足与真实感受可能不同。更多并不一定能回应更深的需要。",
+        "advice": "问自己：最想要的东西背后，我期待获得怎样的感受？"
+      }
+    },
+    {
+      "id": "cups-10",
+      "number": "10",
+      "name": "圣杯十",
+      "english": "Ten of Cups",
+      "suit": "cups",
+      "keywords": [
+        "和谐",
+        "亲密",
+        "共同生活"
+      ],
+      "upright": {
+        "meaning": "被理解与共同生活的温暖，来自日常的回应。理想关系也需要真实的协商与照顾。",
+        "advice": "和重要的人聊聊什么样的日常，会让双方都觉得安心。"
+      },
+      "reversed": {
+        "meaning": "对幸福的标准可能遮住了真实需要，家人或伙伴之间也许有未说清的期待。",
+        "advice": "放下必须看起来完美的要求，讨论一个可改善的小细节。"
+      }
+    },
+    {
+      "id": "cups-11",
+      "number": "PAGE",
+      "name": "圣杯侍从",
+      "english": "Page of Cups",
+      "suit": "cups",
+      "keywords": [
+        "敏感",
+        "灵感",
+        "温柔"
+      ],
+      "upright": {
+        "meaning": "细微的感受可能带来创意与亲近。温柔的表达，不必等到语言足够完美。",
+        "advice": "用一段文字或一个小行动，表达尚未说出口的善意。"
+      },
+      "reversed": {
+        "meaning": "情绪容易被细节牵动，或你担心真诚会显得幼稚而压下感受。",
+        "advice": "先描述发生了什么，再辨认它触动了你哪一种需要。"
+      }
+    },
+    {
+      "id": "cups-12",
+      "number": "KNIGHT",
+      "name": "圣杯骑士",
+      "english": "Knight of Cups",
+      "suit": "cups",
+      "keywords": [
+        "浪漫",
+        "邀请",
+        "理想"
+      ],
+      "upright": {
+        "meaning": "对美好关系与体验的向往，能推动真诚的行动。让想象与现实保持联系。",
+        "advice": "提出一个具体而尊重对方选择的邀请。"
+      },
+      "reversed": {
+        "meaning": "理想化可能让你忽略实际回应，或情绪起伏正在替你作决定。",
+        "advice": "观察持续的行动与事实，给感受留一点沉淀时间。"
+      }
+    },
+    {
+      "id": "cups-13",
+      "number": "QUEEN",
+      "name": "圣杯王后",
+      "english": "Queen of Cups",
+      "suit": "cups",
+      "keywords": [
+        "共情",
+        "容纳",
+        "细腻"
+      ],
+      "upright": {
+        "meaning": "敏锐的感受力能够帮助你理解自己与他人。关心也需要清楚的个人边界。",
+        "advice": "倾听一个人的感受，同时确认自己现在有多少能量陪伴。"
+      },
+      "reversed": {
+        "meaning": "过多吸收他人的情绪，可能让你难以辨认自己的需要。",
+        "advice": "把属于自己的感受与他人的问题分开，给心情一点空白。"
+      }
+    },
+    {
+      "id": "cups-14",
+      "number": "KING",
+      "name": "圣杯国王",
+      "english": "King of Cups",
+      "suit": "cups",
+      "keywords": [
+        "包容",
+        "稳重",
+        "情绪平衡"
+      ],
+      "upright": {
+        "meaning": "情绪可以被理解，也可以被稳妥地表达。成熟的回应为自己与他人创造安心。",
+        "advice": "先给情绪命名，再选择符合你价值的回应方式。"
+      },
+      "reversed": {
+        "meaning": "表面的平静可能压住了真实感受，或你正用情绪影响一段互动。",
+        "advice": "诚实说出自己的状态，避免让对方猜测或负责安抚一切。"
+      }
+    },
+    {
+      "id": "swords-1",
+      "number": "ACE",
+      "name": "宝剑王牌",
+      "english": "Ace of Swords",
+      "suit": "swords",
+      "keywords": [
+        "清晰",
+        "洞见",
+        "真相"
+      ],
+      "upright": {
+        "meaning": "一个清楚的想法可能帮助你穿过混乱。诚实地命名问题，常常是改变的起点。",
+        "advice": "用一句简单的话写出核心问题，再找最直接的证据。"
+      },
+      "reversed": {
+        "meaning": "信息矛盾或表达模糊，可能让你急于抓住一个看似确定的答案。",
+        "advice": "澄清关键词，检查消息来源，暂缓没有依据的判断。"
+      }
+    },
+    {
+      "id": "swords-2",
+      "number": "2",
+      "name": "宝剑二",
+      "english": "Two of Swords",
+      "suit": "swords",
+      "keywords": [
+        "犹豫",
+        "平衡",
+        "决定"
+      ],
+      "upright": {
+        "meaning": "两种立场之间的停顿，可能是在提醒你还有重要信息未被看见。",
+        "advice": "写出两个选择分别守护了什么，再确认你最重视哪一项。"
+      },
+      "reversed": {
+        "meaning": "回避可能正在增加压力，也可能是太多信息让选择变得更困难。",
+        "advice": "限定需要补充的信息范围，为一个可逆的决定设个时间。"
+      }
+    },
+    {
+      "id": "swords-3",
+      "number": "3",
+      "name": "宝剑三",
+      "english": "Three of Swords",
+      "suit": "swords",
+      "keywords": [
+        "伤感",
+        "坦诚",
+        "修复"
+      ],
+      "upright": {
+        "meaning": "难过与失望值得被认真对待。清楚地看见伤口，才能找到合适的修复方式。",
+        "advice": "向可信的人说出你的感受，暂时不要求自己马上振作。"
+      },
+      "reversed": {
+        "meaning": "你可能正慢慢恢复，也可能反复回想让自己受伤的片段。",
+        "advice": "给反刍思绪一个暂停，用一件安稳的小事照顾当下。"
+      }
+    },
+    {
+      "id": "swords-4",
+      "number": "4",
+      "name": "宝剑四",
+      "english": "Four of Swords",
+      "suit": "swords",
+      "keywords": [
+        "休息",
+        "静心",
+        "恢复"
+      ],
+      "upright": {
+        "meaning": "持续思考之后，需要让身心有一段安静。暂停可以帮助下一次回应更清楚。",
+        "advice": "安排一段没有消息提醒的休息，不把它变成新的任务。"
+      },
+      "reversed": {
+        "meaning": "疲惫可能已提醒你需要停下，或休息后你开始准备重新参与。",
+        "advice": "观察现在的精力，选择真正恢复或轻量重启的下一步。"
+      }
+    },
+    {
+      "id": "swords-5",
+      "number": "5",
+      "name": "宝剑五",
+      "english": "Five of Swords",
+      "suit": "swords",
+      "keywords": [
+        "争执",
+        "代价",
+        "取舍"
+      ],
+      "upright": {
+        "meaning": "赢下一次争论，未必能得到真正想要的关系或结果。留意竞争所付出的代价。",
+        "advice": "问自己最想保住什么，选择一个不升级冲突的回应。"
+      },
+      "reversed": {
+        "meaning": "修复冲突的空间可能正在出现，但遗留的不满仍需要坦诚面对。",
+        "advice": "承认自己能承担的部分，提出具体而有限的修复行动。"
+      }
+    },
+    {
+      "id": "swords-6",
+      "number": "6",
+      "name": "宝剑六",
+      "english": "Six of Swords",
+      "suit": "swords",
+      "keywords": [
+        "过渡",
+        "远离纷扰",
+        "调整"
+      ],
+      "upright": {
+        "meaning": "离开混乱的过程未必轻松，但可以慢慢靠近更平稳的状态。允许过渡有自己的速度。",
+        "advice": "减少一个持续消耗你的刺激，为新节奏准备实际支持。"
+      },
+      "reversed": {
+        "meaning": "旧问题可能仍被带在身边，或你因为熟悉而难以迈出改变的一步。",
+        "advice": "辨认需要带走的经验，与可以留在过去的负担。"
+      }
+    },
+    {
+      "id": "swords-7",
+      "number": "7",
+      "name": "宝剑七",
+      "english": "Seven of Swords",
+      "suit": "swords",
+      "keywords": [
+        "策略",
+        "独立",
+        "诚实"
+      ],
+      "upright": {
+        "meaning": "灵活的方法能帮助你处理复杂情境，同时也需要检查是否回避了必要的坦诚。",
+        "advice": "在保护隐私与履行承诺之间，确认一条清楚的界线。"
+      },
+      "reversed": {
+        "meaning": "隐藏的顾虑可能需要被说清，也可能是你开始意识到绕路并没有解决问题。",
+        "advice": "用合适的方式说明真实限制，减少含糊承诺。"
+      }
+    },
+    {
+      "id": "swords-8",
+      "number": "8",
+      "name": "宝剑八",
+      "english": "Eight of Swords",
+      "suit": "swords",
+      "keywords": [
+        "局限",
+        "顾虑",
+        "出口"
+      ],
+      "upright": {
+        "meaning": "压力下，选择可能显得比实际更少。先辨认外在限制与内心假设各占多少。",
+        "advice": "请可信的人帮你看一个盲点，寻找最小的可行动空间。"
+      },
+      "reversed": {
+        "meaning": "你可能开始发现新的选择，但放下熟悉的限制仍需要练习。",
+        "advice": "为一个微小的自由采取行动，记录它带来的真实变化。"
+      }
+    },
+    {
+      "id": "swords-9",
+      "number": "9",
+      "name": "宝剑九",
+      "english": "Nine of Swords",
+      "suit": "swords",
+      "keywords": [
+        "忧虑",
+        "反复思考",
+        "求助"
+      ],
+      "upright": {
+        "meaning": "担忧在安静时可能被放大。此刻更需要温和的支持，而非继续逼迫自己找齐答案。",
+        "advice": "把担心写到纸上，区分明天能处理的事与尚未发生的想象。"
+      },
+      "reversed": {
+        "meaning": "忧虑可能正在缓和，或你需要承认独自承受已经很累。",
+        "advice": "向可信的人讲清困扰，并安排一个可以恢复的日常节奏。"
+      }
+    },
+    {
+      "id": "swords-10",
+      "number": "10",
+      "name": "宝剑十",
+      "english": "Ten of Swords",
+      "suit": "swords",
+      "keywords": [
+        "触底感",
+        "结束",
+        "重新整理"
+      ],
+      "upright": {
+        "meaning": "一种难以继续的状态值得被承认。停止额外消耗，能为恢复留出空间。",
+        "advice": "先照顾当下的基本需要，只处理今天必须完成的一件事。"
+      },
+      "reversed": {
+        "meaning": "恢复可能刚刚开始，也可能是你仍在勉强延续已经耗尽的模式。",
+        "advice": "给复原设定温和的节奏，不用立即证明自己已经没事。"
+      }
+    },
+    {
+      "id": "swords-11",
+      "number": "PAGE",
+      "name": "宝剑侍从",
+      "english": "Page of Swords",
+      "suit": "swords",
+      "keywords": [
+        "求知",
+        "观察",
+        "提问"
+      ],
+      "upright": {
+        "meaning": "好奇与敏锐能帮助你发现细节。提问之前多听一点，让思考有扎实的依据。",
+        "advice": "为一个疑问寻找可靠信息，再用自己的话复述理解。"
+      },
+      "reversed": {
+        "meaning": "碎片信息可能引发误解，或你正在过快地回应尚未理解的内容。",
+        "advice": "发送消息前再读一遍，确认它准确、必要而且清楚。"
+      }
+    },
+    {
+      "id": "swords-12",
+      "number": "KNIGHT",
+      "name": "宝剑骑士",
+      "english": "Knight of Swords",
+      "suit": "swords",
+      "keywords": [
+        "果断",
+        "论证",
+        "直进"
+      ],
+      "upright": {
+        "meaning": "清晰的判断能带来行动力。快速推进时，也留意别人是否有机会参与。",
+        "advice": "说明理由与目标，在行动前留一次简短的反馈机会。"
+      },
+      "reversed": {
+        "meaning": "急于证明观点可能让沟通变得尖锐，速度也可能超过事实能支持的范围。",
+        "advice": "让决定慢半拍，先听完一个与你不同的意见。"
+      }
+    },
+    {
+      "id": "swords-13",
+      "number": "QUEEN",
+      "name": "宝剑王后",
+      "english": "Queen of Swords",
+      "suit": "swords",
+      "keywords": [
+        "明辨",
+        "独立",
+        "直率"
+      ],
+      "upright": {
+        "meaning": "清楚的思考与诚实的表达，可以保护你的边界。温度与准确并不冲突。",
+        "advice": "把事实、感受和请求分开说，让对方更容易理解。"
+      },
+      "reversed": {
+        "meaning": "过去的经验可能让判断过于严厉，或你正在压低自己的声音以避免冲突。",
+        "advice": "检查结论是否公平，用尊重自己的方式表达真实立场。"
+      }
+    },
+    {
+      "id": "swords-14",
+      "number": "KING",
+      "name": "宝剑国王",
+      "english": "King of Swords",
+      "suit": "swords",
+      "keywords": [
+        "理性",
+        "原则",
+        "判断"
+      ],
+      "upright": {
+        "meaning": "系统地分析问题，有助于作出一致的决定。理性也需要纳入人的真实感受。",
+        "advice": "写明判断标准，邀请一个不同视角检查遗漏。"
+      },
+      "reversed": {
+        "meaning": "原则可能变得僵硬，或语言被用来压过别人而非帮助理解。",
+        "advice": "回到规则的目的，确认你的决定是否给相关的人留下表达空间。"
+      }
+    },
+    {
+      "id": "pentacles-1",
+      "number": "ACE",
+      "name": "星币王牌",
+      "english": "Ace of Pentacles",
+      "suit": "pentacles",
+      "keywords": [
+        "机会",
+        "基础",
+        "实践"
+      ],
+      "upright": {
+        "meaning": "一个具体的起点值得认真培育。日常的小投入，能帮助想法逐渐获得稳定的基础。",
+        "advice": "为一件想长期做的事准备时间、工具或一个简单预算。"
+      },
+      "reversed": {
+        "meaning": "机会可能还缺少落地条件，或你被理想结果吸引而忽略实际投入。",
+        "advice": "先核实资源与成本，用小规模尝试检验可行性。"
+      }
+    },
+    {
+      "id": "pentacles-2",
+      "number": "2",
+      "name": "星币二",
+      "english": "Two of Pentacles",
+      "suit": "pentacles",
+      "keywords": [
+        "协调",
+        "弹性",
+        "轻重缓急"
+      ],
+      "upright": {
+        "meaning": "多项事务需要灵活安排。平衡不必每天相同，而是能够随着状态重新分配。",
+        "advice": "找出本周的第一优先事项，为临时变化留一点余量。"
+      },
+      "reversed": {
+        "meaning": "同时兼顾太多事情，可能让重要的细节开始滑落。承认容量有助于重新安排。",
+        "advice": "暂停一项次要任务，把时间表调整到真实可承受的程度。"
+      }
+    },
+    {
+      "id": "pentacles-3",
+      "number": "3",
+      "name": "星币三",
+      "english": "Three of Pentacles",
+      "suit": "pentacles",
+      "keywords": [
+        "协作",
+        "技艺",
+        "反馈"
+      ],
+      "upright": {
+        "meaning": "不同的经验可以共同完成更好的成果。清晰分工与及时反馈，让合作更稳固。",
+        "advice": "与伙伴确认各自负责什么，并交换一条具体的改进建议。"
+      },
+      "reversed": {
+        "meaning": "合作中的标准或职责可能不够清楚，导致努力没有形成合力。",
+        "advice": "重新对齐完成标准，让每个人都知道自己的贡献如何衔接。"
+      }
+    },
+    {
+      "id": "pentacles-4",
+      "number": "4",
+      "name": "星币四",
+      "english": "Four of Pentacles",
+      "suit": "pentacles",
+      "keywords": [
+        "守护",
+        "安全感",
+        "保留"
+      ],
+      "upright": {
+        "meaning": "珍惜已经拥有的资源能带来稳定。也留意保护是否让你失去必要的流动与分享。",
+        "advice": "区分真正需要保留的资源，与出于担心而紧握的部分。"
+      },
+      "reversed": {
+        "meaning": "你可能正在练习放手，也可能因为焦虑而难以维持合适的边界。",
+        "advice": "设定一个舒服的分享范围，让给予与保留都有依据。"
+      }
+    },
+    {
+      "id": "pentacles-5",
+      "number": "5",
+      "name": "星币五",
+      "english": "Five of Pentacles",
+      "suit": "pentacles",
+      "keywords": [
+        "匮乏感",
+        "支持",
+        "互助"
+      ],
+      "upright": {
+        "meaning": "资源紧张或被忽略的感觉可能让人想独自撑住。留意身边可以请求的实际支持。",
+        "advice": "列出最迫切的一项需要，向合适的人提出清楚而具体的请求。"
+      },
+      "reversed": {
+        "meaning": "支持可能逐渐变得可见，也可能是你开始愿意承认需要帮助。",
+        "advice": "接受一个可获得的小帮助，先稳住日常中最重要的部分。"
+      }
+    },
+    {
+      "id": "pentacles-6",
+      "number": "6",
+      "name": "星币六",
+      "english": "Six of Pentacles",
+      "suit": "pentacles",
+      "keywords": [
+        "给予",
+        "接受",
+        "公平"
+      ],
+      "upright": {
+        "meaning": "资源与支持在关系中流动。舒服的互助，需要尊重彼此的边界与真实能力。",
+        "advice": "确认一次帮助是否出于自愿，也允许自己适当地接受。"
+      },
+      "reversed": {
+        "meaning": "给予与接受可能不平衡，或帮助中夹杂了难以说出口的条件。",
+        "advice": "说清双方的期待，避免用过度付出来换取认可。"
+      }
+    },
+    {
+      "id": "pentacles-7",
+      "number": "7",
+      "name": "星币七",
+      "english": "Seven of Pentacles",
+      "suit": "pentacles",
+      "keywords": [
+        "耐心",
+        "评估",
+        "积累"
+      ],
+      "upright": {
+        "meaning": "长期投入需要定期观察。耐心与调整可以同时存在，不必把等待变成盲目坚持。",
+        "advice": "检查一项长期计划的实际进展，决定保留与调整的部分。"
+      },
+      "reversed": {
+        "meaning": "迟迟看不见成果可能让你焦躁，也可能提示投入方式需要改变。",
+        "advice": "设一个合理的复盘节点，用过程证据代替即时结果衡量。"
+      }
+    },
+    {
+      "id": "pentacles-8",
+      "number": "8",
+      "name": "星币八",
+      "english": "Eight of Pentacles",
+      "suit": "pentacles",
+      "keywords": [
+        "练习",
+        "专注",
+        "打磨"
+      ],
+      "upright": {
+        "meaning": "重复练习能把理解变成稳定的能力。把注意力放在可改进的细节上。",
+        "advice": "挑一个小技能专注练习，并记录今天学会的具体一点。"
+      },
+      "reversed": {
+        "meaning": "机械重复或过度追求完美，可能让学习失去方向与乐趣。",
+        "advice": "确认练习的目的，获取一次反馈，再选择最值得改进的细节。"
+      }
+    },
+    {
+      "id": "pentacles-9",
+      "number": "9",
+      "name": "星币九",
+      "english": "Nine of Pentacles",
+      "suit": "pentacles",
+      "keywords": [
+        "独立",
+        "从容",
+        "享用"
+      ],
+      "upright": {
+        "meaning": "积累带来的自主值得珍惜。享受自己的节奏，也允许成果为生活带来舒适。",
+        "advice": "给已经建立的一项能力或习惯一些肯定，并好好使用它。"
+      },
+      "reversed": {
+        "meaning": "对独立的要求可能让你难以接受帮助，或外表的体面正在消耗真实的舒适。",
+        "advice": "检查什么是你真正喜欢的生活，减少一项为了比较而维持的负担。"
+      }
+    },
+    {
+      "id": "pentacles-10",
+      "number": "10",
+      "name": "星币十",
+      "english": "Ten of Pentacles",
+      "suit": "pentacles",
+      "keywords": [
+        "长期",
+        "传承",
+        "共同基础"
+      ],
+      "upright": {
+        "meaning": "持久的安定来自时间、关系与资源的共同积累。思考你希望留下怎样的生活基础。",
+        "advice": "与重要的人讨论一个长期目标，明确彼此能提供的支持。"
+      },
+      "reversed": {
+        "meaning": "既有期待可能与你的生活选择不一致，或长期安排中有尚未讨论的分歧。",
+        "advice": "把个人愿望与共同责任分别写清，寻找可以协商的交集。"
+      }
+    },
+    {
+      "id": "pentacles-11",
+      "number": "PAGE",
+      "name": "星币侍从",
+      "english": "Page of Pentacles",
+      "suit": "pentacles",
+      "keywords": [
+        "学习",
+        "踏实",
+        "萌芽"
+      ],
+      "upright": {
+        "meaning": "认真对待一个小目标，是建立能力的开始。把好奇转化为规律而可见的实践。",
+        "advice": "为一项新技能安排第一次练习，准备所需的基本工具。"
+      },
+      "reversed": {
+        "meaning": "计划可能停在准备阶段，或注意力不断被新的目标吸引。",
+        "advice": "缩小学习范围，先完成一次短而完整的练习。"
+      }
+    },
+    {
+      "id": "pentacles-12",
+      "number": "KNIGHT",
+      "name": "星币骑士",
+      "english": "Knight of Pentacles",
+      "suit": "pentacles",
+      "keywords": [
+        "稳步",
+        "可靠",
+        "耐力"
+      ],
+      "upright": {
+        "meaning": "稳定地做基本工作，也是一种重要的推进。可持续的节奏能够承载长期目标。",
+        "advice": "选一个容易坚持的小习惯，在固定时段反复完成。"
+      },
+      "reversed": {
+        "meaning": "规律可能变成僵化，或重复的任务让你感到困住。",
+        "advice": "保留有效的基础，再给流程加入一个小小的改进。"
+      }
+    },
+    {
+      "id": "pentacles-13",
+      "number": "QUEEN",
+      "name": "星币王后",
+      "english": "Queen of Pentacles",
+      "suit": "pentacles",
+      "keywords": [
+        "照料",
+        "务实",
+        "丰足"
+      ],
+      "upright": {
+        "meaning": "把关心落实在日常里，能够建立真实的安心。照顾环境、身体与资源同样重要。",
+        "advice": "改善一个每天都会使用的小空间，让生活更舒服顺手。"
+      },
+      "reversed": {
+        "meaning": "照料他人的责任可能挤压了自己的需要，或你对安稳有过高要求。",
+        "advice": "把自己的休息列入安排，邀请别人分担一件具体事务。"
+      }
+    },
+    {
+      "id": "pentacles-14",
+      "number": "KING",
+      "name": "星币国王",
+      "english": "King of Pentacles",
+      "suit": "pentacles",
+      "keywords": [
+        "稳健",
+        "经营",
+        "担当"
+      ],
+      "upright": {
+        "meaning": "稳妥地管理资源与承诺，可以为自己和周围的人提供支持。长期价值值得耐心经营。",
+        "advice": "检查一个长期安排是否可靠，优先维护已经建立的基础。"
+      },
+      "reversed": {
+        "meaning": "对成果或控制的执着，可能让你忽略生活中其他重要的价值。",
+        "advice": "重新衡量成功的标准，把关系、时间与舒适也纳入其中。"
+      }
+    }
+  ],
+  "spreads": [
+    {
+      "id": "single",
+      "name": "今日一张",
+      "english": "DAILY CARD",
+      "description": "给此刻的自己，一点温柔的提醒。",
+      "count": 1,
+      "positions": [
+        "此刻的提醒"
+      ]
+    },
+    {
+      "id": "three",
+      "name": "时间之流",
+      "english": "PAST · PRESENT · POSSIBILITY",
+      "description": "回望来路，看清当下，探索接下来的可能。",
+      "count": 3,
+      "positions": [
+        "过去的影响",
+        "当下的状态",
+        "可能的方向"
+      ]
+    },
+    {
+      "id": "relationship",
+      "name": "关系之镜",
+      "english": "RELATIONSHIP",
+      "description": "理解自己的感受，探索互动与沟通。",
+      "count": 3,
+      "positions": [
+        "我的感受",
+        "关系的互动",
+        "沟通的启发"
+      ]
+    },
+    {
+      "id": "choice",
+      "name": "岔路之间",
+      "english": "TWO PATHS",
+      "description": "看见两个选项的侧面，把选择权留给自己。",
+      "count": 3,
+      "positions": [
+        "选择 A 的启发",
+        "选择 B 的启发",
+        "值得考虑的因素"
+      ]
+    }
+  ],
+  "topics": [
+    {
+      "id": "general",
+      "name": "综合指引",
+      "prompt": "最近有什么值得我留意？",
+      "advice": "留意眼前真正能改变的一件小事。"
+    },
+    {
+      "id": "love",
+      "name": "感情关系",
+      "prompt": "我可以怎样更好地理解这段关系？",
+      "advice": "把猜测换成一次真诚、尊重边界的沟通。"
+    },
+    {
+      "id": "career",
+      "name": "工作学业",
+      "prompt": "面对眼前的工作或学业，我可以从哪里开始？",
+      "advice": "挑一个可验证的小目标，行动后再根据反馈调整。"
+    },
+    {
+      "id": "growth",
+      "name": "自我成长",
+      "prompt": "我现在最需要理解自己的哪一面？",
+      "advice": "给自己留一点空间，记录真实感受与当下需要。"
+    }
+  ]
+}

@@ -20,6 +20,12 @@ jobs:
           node-version: '22'
       - name: Verify tarot engine
         run: node --test tests/*.test.js
+      - name: Verify Render backend and persistent quotas
+        run: python3 -m unittest discover -s tests -p 'test_tarot_*.py' -v
+      - name: Verify canonical server card data
+        run: |
+          node scripts/export-server-data.mjs
+          git diff --exit-code -- server/render/tarot_data.json
       - name: Build static website
         run: node scripts/build.mjs
       - uses: actions/configure-pages@v5

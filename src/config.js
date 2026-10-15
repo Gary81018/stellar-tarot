@@ -1,2 +1,2 @@
-// Standalone mode: no AI backend is configured or called by the website.
-export const AI_ENDPOINT = '';
+// Public API base; model credentials stay in the Render service.
+export const AI_ENDPOINT = 'https://one-human-interview.onrender.com/tarot';

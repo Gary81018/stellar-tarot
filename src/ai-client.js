@@ -2,6 +2,10 @@ import { SPREADS, TOPICS } from './engine.js';
 
 const CACHE_KEY = 'stellar-tarot-ai-v1';
 const CACHE_LIMIT = 50;
+const VISITOR_KEY = 'stellar-tarot-ai-visitor-v1';
+const VISITOR_ID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+const visitorIds = new WeakMap();
+let transientVisitorId;
 const REQUEST_TIMEOUT_MS = 90_000;
 const MESSAGES = Object.freeze({
   NOT_CONFIGURED: 'AI 解读正在准备中，请稍后再来。你仍可查看下方的牌意解读。',
@@ -12,11 +16,13 @@ const MESSAGES = Object.freeze({
   UNSUPPORTED_MEDIA_TYPE: '暂时无法提交解读，请刷新页面后再试。',
   FORBIDDEN_ORIGIN: '当前页面尚未连接 AI 服务，请联系网站维护者。',
   RATE_LIMITED: '今天的 AI 解读请求较多，请稍后再试。',
+  AI_BUSY: 'AI 正在为其他朋友解读，请稍后重试。',
+  INVALID_VISITOR: '浏览器访问标识无效，请刷新页面后重试。',
   AI_TIMEOUT: 'AI 思考的时间有点长，请稍后重试。',
   AI_UNAVAILABLE: 'AI 服务暂时不可用，请稍后重试。',
   INVALID_AI_RESPONSE: 'AI 返回的内容不完整，请重试一次。',
   INVALID_RESPONSE: 'AI 返回的内容不完整，请重试一次。',
-  NETWORK_ERROR: '暂时无法连接 AI 服务，请检查网络后重试。',
+  NETWORK_ERROR: '未能连接 AI 服务。可能是服务访问受限或连接暂时中断，请稍后再试；基础牌意仍可阅读。',
   CANCELLED: '已取消本次 AI 解读。',
 });
 
@@ -136,6 +142,33 @@ function endpointBase(endpoint) {
 
 function safeStorage(provided) {
   try { return provided === undefined ? globalThis.localStorage : provided; } catch { return null; }
+}
+
+// A random quota label, not an account, authentication token, or device fingerprint.
+// It is created only for an explicit interpretation request; clearing browser data can reset it.
+function requestVisitorId(storage) {
+  const hasStorage = storage !== null && (typeof storage === 'object' || typeof storage === 'function');
+  let stored;
+  try { stored = storage?.getItem?.(VISITOR_KEY); } catch { /* Storage may be blocked. */ }
+  let id = typeof stored === 'string' && VISITOR_ID_PATTERN.test(stored)
+    ? stored : hasStorage ? visitorIds.get(storage) : transientVisitorId;
+  if (!id) {
+    const crypto = globalThis.crypto;
+    if (typeof crypto?.randomUUID === 'function') id = crypto.randomUUID();
+    else if (typeof crypto?.getRandomValues === 'function') {
+      const bytes = crypto.getRandomValues(new Uint8Array(16));
+      bytes[6] = (bytes[6] & 0x0f) | 0x40;
+      bytes[8] = (bytes[8] & 0x3f) | 0x80;
+      const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('');
+      id = `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+    } else throw new AIClientError('AI_UNAVAILABLE');
+  }
+  if (hasStorage) visitorIds.set(storage, id);
+  else transientVisitorId = id;
+  if (stored !== id) {
+    try { storage?.setItem?.(VISITOR_KEY, id); } catch { /* Retain this page's ID if persistence fails. */ }
+  }
+  return id;
 }
 
 function cachedIdentity(fingerprint) {
@@ -291,13 +324,14 @@ export function createAIClient({ endpoint = '', fetchImpl = globalThis.fetch, st
       base();
       syncCache();
       const safe = readingForRequest(reading);
+      if (signal?.aborted) throw new AIClientError('CANCELLED');
       const fingerprint = readingFingerprint(safe);
       const pending = { fingerprint, invalidated: false };
       pendingRequests.add(pending);
       try {
         const result = validateResult(await fetchJSON('/api/interpret', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'X-Tarot-Visitor-Id': requestVisitorId(localStorage) },
           body: JSON.stringify({ reading: safe }),
         }, signal), safe);
         syncCache();

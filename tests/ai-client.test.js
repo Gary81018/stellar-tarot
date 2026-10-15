@@ -4,6 +4,8 @@ import { AIClientError, createAIClient, readingFingerprint, analysisToText } fro
 
 const ENDPOINT = 'https://tarot.example.test';
 const CACHE_KEY = 'stellar-tarot-ai-v1';
+const VISITOR_KEY = 'stellar-tarot-ai-visitor-v1';
+const VISITOR_ID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 
 function fixture(overrides = {}) {
   return {
@@ -84,7 +86,9 @@ test('requests use the trusted server endpoint and an allowlisted payload withou
   const actual = await client.request(reading);
   assert.equal(captured.url, `${ENDPOINT}/api/interpret`);
   assert.deepEqual(JSON.parse(captured.options.body), { reading: fixture() });
-  assert.deepEqual(captured.options.headers, { 'Content-Type': 'application/json' });
+  assert.equal(captured.options.headers['Content-Type'], 'application/json');
+  assert.match(captured.options.headers['X-Tarot-Visitor-Id'], VISITOR_ID_PATTERN);
+  assert.deepEqual(Object.keys(captured.options.headers).sort(), ['Content-Type', 'X-Tarot-Visitor-Id']);
   assert.equal(captured.options.method, 'POST');
   assert.equal(captured.options.credentials, 'omit');
   assert.equal(captured.options.referrerPolicy, 'no-referrer');
@@ -92,6 +96,72 @@ test('requests use the trusted server endpoint and an allowlisted payload withou
   assert.equal(captured.options.cache, 'no-store');
   assert.ok(captured.options.signal instanceof AbortSignal);
   assert.deepEqual(actual, resultFor());
+});
+
+test('visitor IDs are created only by explicit interpretation requests and persist independently of cached readings', async () => {
+  const storage = memoryStorage();
+  const requests = [];
+  const options = { endpoint: ENDPOINT, storage, fetchImpl: async (url, request) => {
+    requests.push({ url, request });
+    return success(url.endsWith('/api/health')
+      ? { ready: true, provider: 'AI', model: 'test-model' } : resultFor());
+  } };
+  const first = createAIClient(options);
+  first.getCached(fixture());
+  assert.equal(requests.length, 0);
+  assert.equal(storage.getItem(VISITOR_KEY), null);
+  await first.health();
+  assert.equal(requests[0].request.headers?.['X-Tarot-Visitor-Id'], undefined);
+  assert.equal(storage.getItem(VISITOR_KEY), null);
+  await first.request(fixture());
+  const id = requests[1].request.headers['X-Tarot-Visitor-Id'];
+  assert.match(id, VISITOR_ID_PATTERN);
+  assert.equal(storage.getItem(VISITOR_KEY), id);
+  await first.request(fixture({ question: '换一个不相关的问题' }));
+  first.clearAll();
+  assert.equal(storage.getItem(VISITOR_KEY), id);
+  await createAIClient(options).request(fixture());
+  assert.deepEqual(requests.slice(1).map(({ request }) => request.headers['X-Tarot-Visitor-Id']), [id, id, id]);
+  assert.equal(JSON.parse(requests[1].request.body).visitorId, undefined);
+});
+
+test('valid stored visitor IDs are reused and malformed values cannot enter HTTP headers', async () => {
+  const valid = '9d3e75f7-1d72-4b50-b7ce-e2817e51b145';
+  for (const existing of [valid, '', 'user@example.com', 'bad\r\nInjected: value', valid.toUpperCase()]) {
+    const storage = memoryStorage();
+    storage.setItem(VISITOR_KEY, existing);
+    let headers;
+    const client = createAIClient({ endpoint: ENDPOINT, storage, fetchImpl: async (_, request) => {
+      headers = request.headers;
+      return success(resultFor());
+    } });
+    await client.request(fixture());
+    const id = headers['X-Tarot-Visitor-Id'];
+    assert.match(id, VISITOR_ID_PATTERN);
+    assert.equal(storage.getItem(VISITOR_KEY), id);
+    if (existing === valid) assert.equal(id, valid);
+    else assert.notEqual(id, existing);
+  }
+});
+
+test('blocked, full, or absent storage keeps the random visitor ID stable within the page session', async () => {
+  for (const storage of [
+    null,
+    { getItem() { throw new Error('blocked'); }, setItem() { throw new Error('blocked'); } },
+    { getItem() { return null; }, setItem() { throw new Error('quota exceeded'); } },
+  ]) {
+    const ids = [];
+    const options = { endpoint: ENDPOINT, storage, fetchImpl: async (_, request) => {
+      ids.push(request.headers['X-Tarot-Visitor-Id']);
+      return success(resultFor());
+    } };
+    const first = createAIClient(options);
+    await first.request(fixture());
+    await first.request(fixture());
+    await createAIClient(options).request(fixture());
+    assert.match(ids[0], VISITOR_ID_PATTERN);
+    assert.deepEqual(ids, [ids[0], ids[0], ids[0]]);
+  }
 });
 
 test('a question-free share never reuses the original private interpretation, even when its ID matches', async () => {
