@@ -170,6 +170,86 @@ test('in-memory results are bounded and isolated from callers when localStorage 
   assert.deepEqual(client.getCached(fixture()), resultFor());
 });
 
+test('another tab clearing all results cannot be undone by this tab generating a new interpretation', async () => {
+  const storage = memoryStorage();
+  const options = { endpoint: ENDPOINT, storage, fetchImpl: async () => success(resultFor()) };
+  const firstTab = createAIClient(options);
+  await firstTab.request(fixture());
+  const secondTab = createAIClient(options);
+  secondTab.clearAll();
+  await firstTab.request(fixture({ question: '另一个新问题' }));
+  assert.equal(firstTab.getCached(fixture()), null);
+  assert.equal(createAIClient(options).getCached(fixture()), null);
+  assert.ok(createAIClient(options).getCached(fixture({ question: '另一个新问题' })));
+});
+
+test('cross-tab cache reads and single deletions preserve unrelated results without restoring deleted data', async () => {
+  const storage = memoryStorage();
+  const options = { endpoint: ENDPOINT, storage, fetchImpl: async () => success(resultFor()) };
+  const firstTab = createAIClient(options);
+  const secondTab = createAIClient(options);
+  await firstTab.request(fixture());
+  assert.deepEqual(secondTab.getCached(fixture()), resultFor());
+  await secondTab.request(fixture({ question: '保留这个问题' }));
+  assert.ok(firstTab.getCached(fixture({ question: '保留这个问题' })));
+  secondTab.clear(fixture());
+  assert.equal(firstTab.getCached(fixture()), null);
+  assert.ok(firstTab.getCached(fixture({ question: '保留这个问题' })));
+  await firstTab.request(fixture({ question: '新问题' }));
+  assert.equal(createAIClient(options).getCached(fixture()), null);
+  assert.ok(createAIClient(options).getCached(fixture({ question: '保留这个问题' })));
+});
+
+test('a response finishing after an observable deletion in another tab cannot restore the result', async () => {
+  for (const clearAll of [false, true]) {
+    const storage = memoryStorage();
+    let finish;
+    let pendingMode = false;
+    const options = { endpoint: ENDPOINT, storage, fetchImpl: async () => pendingMode
+      ? new Promise((resolve) => { finish = resolve; }) : success(resultFor()) };
+    const firstTab = createAIClient(options);
+    await firstTab.request(fixture());
+    const secondTab = createAIClient(options);
+    pendingMode = true;
+    const pending = firstTab.request(fixture());
+    if (clearAll) secondTab.clearAll();
+    else secondTab.clear(fixture());
+    finish(success(resultFor()));
+    await assert.rejects(pending, expectCode('CANCELLED'));
+    assert.equal(firstTab.getCached(fixture()), null);
+    assert.equal(createAIClient(options).getCached(fixture()), null);
+  }
+});
+
+test('cache synchronization preserves fresh in-memory results when storage is readable but writes fail', async () => {
+  const underlying = memoryStorage();
+  const options = { endpoint: ENDPOINT, fetchImpl: async () => success(resultFor()) };
+  await createAIClient({ ...options, storage: underlying }).request(fixture());
+  const storage = { ...underlying, setItem() { throw new Error('quota exceeded'); } };
+  const client = createAIClient({ ...options, storage });
+  const unsaved = fixture({ question: '空间已满时的新问题' });
+  await client.request(unsaved);
+  assert.deepEqual(client.getCached(unsaved), resultFor());
+  assert.ok(client.getCached(fixture()));
+  client.clear(fixture());
+  assert.equal(client.getCached(fixture()), null);
+  assert.deepEqual(client.getCached(unsaved), resultFor());
+});
+
+test('results generated while storage reads are blocked survive access being restored', async () => {
+  const underlying = memoryStorage();
+  let blocked = true;
+  const storage = {
+    getItem(key) { if (blocked) throw new Error('blocked'); return underlying.getItem(key); },
+    setItem(key, value) { if (blocked) throw new Error('blocked'); underlying.setItem(key, value); },
+    removeItem(key) { if (blocked) throw new Error('blocked'); underlying.removeItem(key); },
+  };
+  const client = createAIClient({ endpoint: ENDPOINT, storage, fetchImpl: async () => success(resultFor()) });
+  await client.request(fixture());
+  blocked = false;
+  assert.deepEqual(client.getCached(fixture()), resultFor());
+});
+
 test('a throwing browser localStorage getter does not prevent client construction', () => {
   const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'localStorage');
   Object.defineProperty(globalThis, 'localStorage', { configurable: true, get() { throw new Error('SecurityError'); } });

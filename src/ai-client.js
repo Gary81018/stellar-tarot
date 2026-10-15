@@ -148,9 +148,15 @@ function cachedIdentity(fingerprint) {
   return readingFingerprint(reading) === fingerprint ? reading : null;
 }
 
-function readCache(storage) {
+function readStorage(storage) {
   try {
-    const raw = storage?.getItem(CACHE_KEY);
+    if (typeof storage?.getItem !== 'function') return undefined;
+    return storage.getItem(CACHE_KEY);
+  } catch { return undefined; }
+}
+
+function readCache(raw) {
+  try {
     if (!raw || raw.length > 2_000_000) return [];
     const parsed = JSON.parse(raw);
     if (parsed?.version !== 1 || !Array.isArray(parsed.entries)) return [];
@@ -171,8 +177,14 @@ function readCache(storage) {
 }
 
 function saveCache(storage, entries) {
-  try { storage?.setItem(CACHE_KEY, JSON.stringify({ version: 1, entries: entries.slice(0, CACHE_LIMIT) })); } catch {
+  try {
+    if (typeof storage?.setItem !== 'function') return undefined;
+    const raw = JSON.stringify({ version: 1, entries: entries.slice(0, CACHE_LIMIT) });
+    storage.setItem(CACHE_KEY, raw);
+    return raw;
+  } catch {
     // Private browsing and full storage must not discard a freshly generated interpretation.
+    return undefined;
   }
 }
 
@@ -188,8 +200,36 @@ function serverError(status, body) {
 export function createAIClient({ endpoint = '', fetchImpl = globalThis.fetch, storage } = {}) {
   const localStorage = safeStorage(storage);
   // Keep this instance usable when persistence is blocked or runs out of space.
-  let memoryCache = readCache(localStorage);
+  let lastStorageValue = readStorage(localStorage);
+  let memoryCache = readCache(lastStorageValue);
   const pendingRequests = new Set();
+
+  function syncCache() {
+    const latest = readStorage(localStorage);
+    if (latest === undefined || latest === lastStorageValue) return;
+    const stored = readCache(latest);
+    if (lastStorageValue === undefined) {
+      // Storage has become readable: retain results generated while it was unavailable.
+      const known = new Set(memoryCache.map((entry) => entry.fingerprint));
+      memoryCache = [...memoryCache, ...stored.filter((entry) => !known.has(entry.fingerprint))].slice(0, CACHE_LIMIT);
+    } else {
+      const previous = new Set(memoryCache.map((entry) => entry.fingerprint));
+      const remaining = new Set(stored.map((entry) => entry.fingerprint));
+      for (const pending of pendingRequests) {
+        if (latest === null || (previous.has(pending.fingerprint) && !remaining.has(pending.fingerprint))) {
+          pending.invalidated = true;
+        }
+      }
+      // Another tab owns this change, including removals. Never merge stale entries back.
+      memoryCache = stored;
+    }
+    lastStorageValue = latest;
+  }
+
+  function persistCache() {
+    const saved = saveCache(localStorage, memoryCache);
+    if (saved !== undefined) lastStorageValue = saved;
+  }
   // Resolve errors when called, so a bad deployment setting cannot break local tarot readings.
   function base() {
     const value = endpointBase(endpoint);
@@ -241,6 +281,7 @@ export function createAIClient({ endpoint = '', fetchImpl = globalThis.fetch, st
   return {
     getCached(reading) {
       try {
+        syncCache();
         const fingerprint = readingFingerprint(reading);
         const result = memoryCache.find((entry) => entry.fingerprint === fingerprint)?.result;
         return result ? validateResult(result, reading) : null;
@@ -248,6 +289,7 @@ export function createAIClient({ endpoint = '', fetchImpl = globalThis.fetch, st
     },
     async request(reading, { signal } = {}) {
       base();
+      syncCache();
       const safe = readingForRequest(reading);
       const fingerprint = readingFingerprint(safe);
       const pending = { fingerprint, invalidated: false };
@@ -258,12 +300,13 @@ export function createAIClient({ endpoint = '', fetchImpl = globalThis.fetch, st
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ reading: safe }),
         }, signal), safe);
+        syncCache();
         if (pending.invalidated || signal?.aborted) throw new AIClientError('CANCELLED');
         memoryCache = [
           { fingerprint, result: validateResult(result, safe) },
           ...memoryCache.filter((entry) => entry.fingerprint !== fingerprint),
         ].slice(0, CACHE_LIMIT);
-        saveCache(localStorage, memoryCache);
+        persistCache();
         return result;
       } finally {
         pendingRequests.delete(pending);
@@ -271,18 +314,24 @@ export function createAIClient({ endpoint = '', fetchImpl = globalThis.fetch, st
     },
     clear(reading) {
       try {
+        syncCache();
         const fingerprint = readingFingerprint(reading);
         for (const pending of pendingRequests) {
           if (pending.fingerprint === fingerprint) pending.invalidated = true;
         }
         memoryCache = memoryCache.filter((entry) => entry.fingerprint !== fingerprint);
-        saveCache(localStorage, memoryCache);
+        persistCache();
       } catch { /* Invalid readings do not affect other cached results. */ }
     },
     clearAll() {
       for (const pending of pendingRequests) pending.invalidated = true;
       memoryCache = [];
-      try { localStorage?.removeItem(CACHE_KEY); } catch { /* Storage may be disabled. */ }
+      try {
+        if (typeof localStorage?.removeItem === 'function') {
+          localStorage.removeItem(CACHE_KEY);
+          lastStorageValue = null;
+        }
+      } catch { /* Storage may be disabled. */ }
     },
     async health() {
       const value = await fetchJSON('/api/health', { method: 'GET' });
